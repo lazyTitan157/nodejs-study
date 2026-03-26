@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "express": "^4.13.4",
-    "jade": "^1.11.0",
+    "pug": "^3.0.2",
     "body-parser": "^1.16.1",
     "compression": "latest",
     "cookie-parser": "^1.4.3",
