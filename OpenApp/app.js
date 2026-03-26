@@ -4,6 +4,7 @@ var app = express();
 var bodyParser = require('body-parser');
 
 app.locals.pretty = true;
+app.engine('jade', require('pug').__express);
 app.set('view engine', 'jade');
 app.set('views', path.join(__dirname, 'views'));
 
