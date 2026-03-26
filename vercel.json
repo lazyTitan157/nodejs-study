@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/BizchoolPlatform/(.*)", "destination": "/api/bizchool" },
+    { "source": "/BizchoolPlatform", "destination": "/api/bizchool" },
+    { "source": "/OpenApp/(.*)", "destination": "/api/openapp" },
+    { "source": "/OpenApp", "destination": "/api/openapp" }
+  ]
+}
