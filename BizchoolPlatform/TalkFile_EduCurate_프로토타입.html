@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduCurate - 사회교과 교사 전용 플랫폼</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #5B7B6A;
+  --primary-light: #7A9E8A;
+  --primary-dark: #3D5A4A;
+  --accent: #D4916E;
+  --accent-light: #E8B89A;
+  --accent-soft: #F5DFD0;
+  --bg: #FAFAF7;
+  --bg-warm: #F5F2ED;
+  --bg-card: #FFFFFF;
+  --text: #2C2C2C;
+  --text-sub: #6B6B6B;
+  --text-light: #9B9B9B;
+  --border: #E8E4DE;
+  --border-light: #F0ECE6;
+  --success: #5B8C5A;
+  --warning: #D4916E;
+  --star: #E8B44D;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-light);
+  padding: 0 40px;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Noto Serif KR', serif;
+  font-weight: 700; font-size: 20px; color: var(--primary-dark);
+}
+.nav-logo .logo-icon {
+  width: 36px; height: 36px; background: var(--primary);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 18px; font-family: 'Noto Serif KR', serif;
+}
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  padding: 8px 16px; border-radius: var(--radius-sm);
+  text-decoration: none; color: var(--text-sub);
+  font-size: 14px; font-weight: 500;
+  transition: all 0.2s ease;
+}
+.nav-links a:hover { background: var(--bg-warm); color: var(--text); }
+.nav-links a.active { background: var(--primary); color: white; }
+.nav-user {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; color: var(--text-sub);
+}
+.nav-user .avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--accent-soft); display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600; color: var(--accent);
+}
+.nav-user .badge {
+  background: var(--accent); color: white; font-size: 11px;
+  padding: 2px 8px; border-radius: 10px; font-weight: 600;
+}
+
+/* ── PAGE SECTIONS ── */
+.page-section {
+  padding: 100px 40px 60px;
+  max-width: 1200px; margin: 0 auto;
+  display: none;
+}
+.page-section.active { display: block; }
+
+.section-header {
+  margin-bottom: 32px;
+}
+.section-header h1 {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 28px; font-weight: 700; color: var(--primary-dark);
+  margin-bottom: 8px;
+}
+.section-header p {
+  font-size: 15px; color: var(--text-sub); line-height: 1.6;
+}
+
+/* ── HOME/DASHBOARD ── */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+}
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease;
+}
+.card:hover { box-shadow: var(--shadow-md); }
+.card-title {
+  font-size: 16px; font-weight: 600; color: var(--text);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+.card-title .icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+
+/* Quick Access - 교과서 선택 */
+.textbook-selector {
+  display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.textbook-btn {
+  padding: 8px 16px; border-radius: 20px;
+  border: 1.5px solid var(--border); background: white;
+  font-size: 13px; font-weight: 500; color: var(--text-sub);
+  cursor: pointer; transition: all 0.2s ease;
+}
+.textbook-btn:hover { border-color: var(--primary-light); color: var(--primary); }
+.textbook-btn.selected {
+  background: var(--primary); color: white; border-color: var(--primary);
+}
+
+/* Unit cards */
+.unit-list { display: flex; flex-direction: column; gap: 8px; }
+.unit-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-radius: var(--radius-sm);
+  background: var(--bg-warm); cursor: pointer;
+  transition: all 0.2s ease;
+}
+.unit-item:hover { background: #EDE9E2; transform: translateX(4px); }
+.unit-item .unit-name {
+  font-size: 14px; font-weight: 500; color: var(--text);
+}
+.unit-item .unit-meta {
+  display: flex; gap: 12px; font-size: 12px; color: var(--text-light);
+}
+.unit-item .unit-meta .count {
+  background: var(--primary-light); color: white;
+  padding: 2px 8px; border-radius: 10px; font-weight: 600; font-size: 11px;
+}
+
+/* Recent activity */
+.activity-list { display: flex; flex-direction: column; gap: 12px; }
+.activity-item {
+  display: flex; gap: 12px; padding: 12px;
+  border-radius: var(--radius-sm); background: var(--bg);
+}
+.activity-item .act-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--accent-soft); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600; color: var(--accent);
+}
+.activity-item .act-content { flex: 1; }
+.activity-item .act-title { font-size: 13px; font-weight: 500; color: var(--text); }
+.activity-item .act-desc { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+.activity-item .act-time { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+
+/* ── ARCHIVE PAGE ── */
+.archive-layout {
+  display: grid; grid-template-columns: 260px 1fr; gap: 24px;
+}
+.sidebar-filter {
+  background: var(--bg-card); border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg); padding: 20px;
+  box-shadow: var(--shadow-sm); height: fit-content;
+  position: sticky; top: 84px;
+}
+.filter-group { margin-bottom: 20px; }
+.filter-group h3 {
+  font-size: 13px; font-weight: 600; color: var(--text-sub);
+  margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.filter-options { display: flex; flex-direction: column; gap: 4px; }
+.filter-option {
+  padding: 8px 12px; border-radius: var(--radius-sm);
+  font-size: 13px; color: var(--text-sub); cursor: pointer;
+  transition: all 0.15s ease;
+}
+.filter-option:hover { background: var(--bg-warm); color: var(--text); }
+.filter-option.active {
+  background: var(--primary); color: white; font-weight: 500;
+}
+
+.resource-grid { display: flex; flex-direction: column; gap: 12px; }
+.resource-card {
+  background: var(--bg-card); border: 1px solid var(--border-light);
+  border-radius: var(--radius); padding: 20px;
+  box-shadow: var(--shadow-sm); display: flex; gap: 16px;
+  transition: all 0.2s ease; cursor: pointer;
+}
+.resource-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.resource-type-badge {
+  width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 600;
+}
+.badge-ppt { background: #FFF0E6; color: #D4916E; }
+.badge-worksheet { background: #E8F0E8; color: #5B8C5A; }
+.badge-rubric { background: #EDE6F5; color: #7B6BA0; }
+.badge-idea { background: #FFF8E1; color: #C4A33C; }
+.resource-info { flex: 1; }
+.resource-info h4 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.resource-info .resource-meta {
+  display: flex; gap: 12px; font-size: 12px; color: var(--text-light); margin-bottom: 8px;
+}
+.resource-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 500;
+  background: var(--bg-warm); color: var(--text-sub);
+}
+.tag.tag-unit { background: #E8F0E8; color: var(--primary-dark); }
+.tag.tag-type { background: #FFF0E6; color: #B87A55; }
+.resource-stats {
+  display: flex; flex-direction: column; align-items: flex-end;
+  justify-content: center; gap: 4px; flex-shrink: 0;
+}
+.resource-stats .stat { font-size: 12px; color: var(--text-light); }
+.resource-stats .stat strong { color: var(--text-sub); }
+
+/* ── REVIEW PAGE (교보재 평가) ── */
+.review-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px;
+}
+.review-card {
+  background: var(--bg-card); border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: var(--shadow-sm); transition: all 0.2s ease;
+}
+.review-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.review-card-img {
+  width: 100%; height: 180px; background: var(--bg-warm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px; color: var(--primary-light);
+  position: relative;
+}
+.review-card-img .verified-badge {
+  position: absolute; top: 12px; right: 12px;
+  background: var(--primary); color: white;
+  padding: 4px 12px; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+}
+.review-card-body { padding: 20px; }
+.review-card-body h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.review-card-body .maker { font-size: 13px; color: var(--text-light); margin-bottom: 12px; }
+.score-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;
+}
+.score-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 10px; background: var(--bg); border-radius: 6px;
+  font-size: 12px;
+}
+.score-item .score-label { color: var(--text-sub); }
+.score-item .score-value { font-weight: 700; color: var(--primary-dark); }
+.score-bar {
+  width: 100%; height: 6px; background: var(--border-light);
+  border-radius: 3px; overflow: hidden; margin-bottom: 12px;
+}
+.score-bar-fill {
+  height: 100%; background: linear-gradient(90deg, var(--primary-light), var(--primary));
+  border-radius: 3px;
+}
+.review-units {
+  display: flex; gap: 6px; flex-wrap: wrap;
+}
+.review-unit-tag {
+  padding: 4px 10px; border-radius: 12px; font-size: 11px;
+  background: var(--accent-soft); color: var(--accent); font-weight: 500;
+}
+.review-card-footer {
+  padding: 12px 20px; border-top: 1px solid var(--border-light);
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--text-light);
+}
+
+/* ── COMMUNITY PAGE ── */
+.community-layout {
+  display: grid; grid-template-columns: 1fr 300px; gap: 24px;
+}
+.post-list { display: flex; flex-direction: column; gap: 12px; }
+.post-card {
+  background: var(--bg-card); border: 1px solid var(--border-light);
+  border-radius: var(--radius); padding: 20px;
+  box-shadow: var(--shadow-sm); cursor: pointer;
+  transition: all 0.15s ease;
+}
+.post-card:hover { box-shadow: var(--shadow-md); }
+.post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.post-header .post-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--accent-soft); display: flex; align-items: center;
+  justify-content: center; font-size: 13px; font-weight: 600; color: var(--accent);
+}
+.post-header .post-author { font-size: 14px; font-weight: 600; color: var(--text); }
+.post-header .post-time { font-size: 12px; color: var(--text-light); }
+.post-category {
+  display: inline-block; padding: 3px 10px; border-radius: 10px;
+  font-size: 11px; font-weight: 600; margin-bottom: 8px;
+}
+.cat-qna { background: #E8F0E8; color: #5B8C5A; }
+.cat-discuss { background: #EDE6F5; color: #7B6BA0; }
+.cat-news { background: #FFF0E6; color: #D4916E; }
+.cat-free { background: var(--bg-warm); color: var(--text-sub); }
+.post-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.post-excerpt { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+.post-footer {
+  display: flex; gap: 16px; margin-top: 12px;
+  font-size: 12px; color: var(--text-light);
+}
+
+/* Side widgets */
+.widget { margin-bottom: 16px; }
+.widget-title {
+  font-size: 14px; font-weight: 600; color: var(--text);
+  margin-bottom: 12px; padding-bottom: 8px;
+  border-bottom: 2px solid var(--primary-light);
+}
+.popular-list { display: flex; flex-direction: column; gap: 8px; }
+.popular-item {
+  display: flex; gap: 8px; align-items: flex-start; font-size: 13px;
+}
+.popular-item .rank {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: var(--primary); color: white; font-size: 11px;
+  font-weight: 700; display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0;
+}
+.popular-item .rank.r2 { background: var(--primary-light); }
+.popular-item .rank.r3 { background: var(--accent); }
+.popular-item a { color: var(--text-sub); text-decoration: none; line-height: 1.4; }
+.popular-item a:hover { color: var(--primary); }
+
+/* ── STATS / NOTICE BOX ── */
+.notice-box {
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+  color: white; border-radius: var(--radius-lg); padding: 24px;
+  margin-bottom: 24px;
+}
+.notice-box h2 {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 20px; font-weight: 700; margin-bottom: 8px;
+}
+.notice-box p { font-size: 14px; opacity: 0.9; line-height: 1.6; }
+.stats-row {
+  display: flex; gap: 16px; margin-top: 16px;
+}
+.stat-item {
+  background: rgba(255,255,255,0.15); border-radius: var(--radius-sm);
+  padding: 12px 16px; flex: 1; text-align: center;
+}
+.stat-item .stat-num { font-size: 22px; font-weight: 700; }
+.stat-item .stat-label { font-size: 11px; opacity: 0.8; margin-top: 2px; }
+
+/* ── LOGIN PAGE ── */
+.login-page {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(160deg, #F5F2ED 0%, #E8E4DE 50%, #D8E0D8 100%);
+  padding: 40px;
+}
+.login-card {
+  background: white; border-radius: 20px; box-shadow: var(--shadow-lg);
+  padding: 48px; width: 100%; max-width: 440px; text-align: center;
+}
+.login-card .logo-big {
+  width: 64px; height: 64px; background: var(--primary);
+  border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 28px; font-family: 'Noto Serif KR', serif;
+  font-weight: 700; margin: 0 auto 20px;
+}
+.login-card h1 {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 24px; font-weight: 700; color: var(--primary-dark);
+  margin-bottom: 8px;
+}
+.login-card .subtitle { font-size: 14px; color: var(--text-sub); margin-bottom: 32px; }
+.login-card .login-notice {
+  background: var(--bg-warm); border-radius: var(--radius-sm);
+  padding: 16px; margin-bottom: 24px; text-align: left;
+}
+.login-card .login-notice h3 {
+  font-size: 13px; font-weight: 600; color: var(--primary-dark); margin-bottom: 6px;
+}
+.login-card .login-notice p { font-size: 12px; color: var(--text-sub); line-height: 1.6; }
+.input-group { margin-bottom: 16px; text-align: left; }
+.input-group label {
+  display: block; font-size: 13px; font-weight: 500;
+  color: var(--text-sub); margin-bottom: 6px;
+}
+.input-group input, .input-group select {
+  width: 100%; padding: 12px 16px; border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: border-color 0.2s;
+  background: white; color: var(--text);
+}
+.input-group input:focus, .input-group select:focus {
+  outline: none; border-color: var(--primary);
+}
+.btn-primary {
+  width: 100%; padding: 14px; background: var(--primary);
+  color: white; border: none; border-radius: var(--radius-sm);
+  font-size: 15px; font-weight: 600; cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+.btn-primary:hover { background: var(--primary-dark); }
+.file-upload {
+  border: 2px dashed var(--border); border-radius: var(--radius-sm);
+  padding: 20px; text-align: center; cursor: pointer;
+  transition: border-color 0.2s; margin-bottom: 16px;
+}
+.file-upload:hover { border-color: var(--primary-light); }
+.file-upload .upload-icon { font-size: 28px; margin-bottom: 8px; }
+.file-upload p { font-size: 13px; color: var(--text-sub); }
+.file-upload .upload-hint { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+
+/* ── PAGE TABS ── */
+.page-tabs {
+  display: none; position: fixed; bottom: 0; left: 0; right: 0;
+  background: white; border-top: 1px solid var(--border-light);
+  padding: 8px 20px 12px; z-index: 100;
+  justify-content: space-around;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.card, .resource-card, .review-card, .post-card { animation: fadeIn 0.4s ease both; }
+.resource-card:nth-child(2) { animation-delay: 0.05s; }
+.resource-card:nth-child(3) { animation-delay: 0.1s; }
+.review-card:nth-child(2) { animation-delay: 0.05s; }
+.review-card:nth-child(3) { animation-delay: 0.1s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .nav { padding: 0 16px; }
+  .nav-links { display: none; }
+  .page-tabs { display: flex; }
+  .page-section { padding: 80px 16px 80px; }
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .archive-layout { grid-template-columns: 1fr; }
+  .community-layout { grid-template-columns: 1fr; }
+  .review-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== 로그인/가입 페이지 ==================== -->
+<div id="page-login" class="login-page">
+  <div class="login-card">
+    <div class="logo-big">E</div>
+    <h1>EduCurate</h1>
+    <p class="subtitle">중등 사회교과 교사 전용 플랫폼</p>
+
+    <div class="login-notice">
+      <h3>🔒 교사 인증 가입제</h3>
+      <p>본 플랫폼은 현직 중등 사회교과 교사만 가입 가능합니다.<br>
+      NEIS 재직증명서 또는 급여명세서를 업로드해 주세요.<br>
+      운영진 승인 후 이용이 가능합니다.</p>
+    </div>
+
+    <div class="input-group">
+      <label>이름</label>
+      <input type="text" placeholder="실명을 입력해 주세요">
+    </div>
+    <div class="input-group">
+      <label>담당 교과</label>
+      <select>
+        <option>사회 (일반사회)</option>
+        <option>역사</option>
+        <option>도덕/윤리</option>
+        <option>지리</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label>사용 교과서</label>
+      <select>
+        <option>비상교육 - 사회①②</option>
+        <option>금성출판사 - 사회①②</option>
+        <option>미래엔 - 사회①②</option>
+        <option>천재교육 - 사회①②</option>
+        <option>동아출판 - 사회①②</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label>교사 인증 서류</label>
+      <div class="file-upload" id="fileUpload">
+        <div class="upload-icon">📄</div>
+        <p>NEIS 재직증명서 또는 급여명세서</p>
+        <p class="upload-hint">PDF, JPG, PNG (최대 10MB)</p>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="showMain()">가입 신청하기</button>
+    <p style="margin-top:16px; font-size:13px; color:var(--text-light)">
+      이미 계정이 있으신가요? <a href="#" onclick="showMain()" style="color:var(--primary); font-weight:600">로그인</a>
+    </p>
+  </div>
+</div>
+
+<!-- ==================== 메인 앱 ==================== -->
+<div id="main-app" style="display:none">
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="logo-icon">E</div>
+    EduCurate
+  </div>
+  <div class="nav-links">
+    <a href="#" class="active" onclick="showPage('home')">홈</a>
+    <a href="#" onclick="showPage('archive')">수업자료</a>
+    <a href="#" onclick="showPage('review')">교보재 평가</a>
+    <a href="#" onclick="showPage('community')">커뮤니티</a>
+  </div>
+  <div class="nav-user">
+    <span class="badge">에듀큐레이터</span>
+    <span>김서연 선생님</span>
+    <div class="avatar">김</div>
+  </div>
+</nav>
+
+<!-- ===== HOME ===== -->
+<div id="page-home" class="page-section active">
+  <div class="notice-box">
+    <h2>안녕하세요, 김서연 선생님 🌿</h2>
+    <p>오늘도 좋은 수업을 준비하고 계시군요. 선생님의 교과서(비상교육 사회②)에 맞는 새 자료 3건이 올라왔습니다.</p>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num">8,073</div>
+        <div class="stat-label">인증된 교사</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">2,451</div>
+        <div class="stat-label">공유된 자료</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">186</div>
+        <div class="stat-label">평가된 교보재</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">47</div>
+        <div class="stat-label">활용 아이디어</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <div>
+      <!-- 내 교과서 단원별 자료 -->
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title">
+          <div class="icon" style="background:#E8F0E8; color:var(--primary)">📘</div>
+          내 교과서 단원별 자료 바로가기
+        </div>
+        <div class="textbook-selector">
+          <button class="textbook-btn selected">비상교육 사회②</button>
+          <button class="textbook-btn">금성 사회②</button>
+          <button class="textbook-btn">미래엔 사회②</button>
+          <button class="textbook-btn">천재 사회②</button>
+        </div>
+        <div class="unit-list">
+          <div class="unit-item">
+            <div class="unit-name">1단원 · 인권과 헌법</div>
+            <div class="unit-meta">
+              <span class="count">자료 42건</span>
+              <span>교구 5종</span>
+            </div>
+          </div>
+          <div class="unit-item">
+            <div class="unit-name">2단원 · 헌법과 국가기관</div>
+            <div class="unit-meta">
+              <span class="count">자료 38건</span>
+              <span>교구 3종</span>
+            </div>
+          </div>
+          <div class="unit-item">
+            <div class="unit-name">3단원 · 경제생활과 선택</div>
+            <div class="unit-meta">
+              <span class="count">자료 56건</span>
+              <span>교구 8종</span>
+            </div>
+          </div>
+          <div class="unit-item">
+            <div class="unit-name">4단원 · 시장경제와 가격</div>
+            <div class="unit-meta">
+              <span class="count">자료 49건</span>
+              <span>교구 6종</span>
+            </div>
+          </div>
+          <div class="unit-item">
+            <div class="unit-name">5단원 · 국민경제와 국제거래</div>
+            <div class="unit-meta">
+              <span class="count">자료 33건</span>
+              <span>교구 4종</span>
+            </div>
+          </div>
+          <div class="unit-item">
+            <div class="unit-name">6단원 · 국제사회와 국제정치</div>
+            <div class="unit-meta">
+              <span class="count">자료 28건</span>
+              <span>교구 2종</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 다른 출판사 같은 주제 매핑 안내 -->
+      <div class="card" style="background: linear-gradient(135deg, #F5DFD0 0%, #FFF0E6 100%); border-color: var(--accent-light);">
+        <div class="card-title" style="color: var(--accent);">
+          <div class="icon" style="background:white; color:var(--accent)">🔗</div>
+          교과서 간 단원 연결
+        </div>
+        <p style="font-size:13px; color:#8B6B55; line-height:1.7;">
+          비상교육 <strong>"4단원 시장경제와 가격"</strong>을 선택하시면,<br>
+          금성 <em>"5단원 시장과 경제활동"</em>, 미래엔 <em>"4단원 시장과 가격"</em> 등<br>
+          같은 성취기준의 다른 출판사 자료까지 함께 보여드립니다.
+        </p>
+      </div>
+    </div>
+
+    <!-- 오른쪽 사이드 -->
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">
+          <div class="icon" style="background:#FFF0E6; color:var(--accent)">🆕</div>
+          최근 활동
+        </div>
+        <div class="activity-list">
+          <div class="activity-item">
+            <div class="act-avatar">박</div>
+            <div class="act-content">
+              <div class="act-title">박민지 선생님이 수행평가 루브릭을 공유했습니다</div>
+              <div class="act-desc">3단원 경제생활과 선택 · 모둠 토론 루브릭</div>
+              <div class="act-time">15분 전</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-avatar">이</div>
+            <div class="act-content">
+              <div class="act-title">이수현 선생님이 교구 활용법을 올렸습니다</div>
+              <div class="act-desc">시장경제 보드게임 · 4단원 연계 수행평가</div>
+              <div class="act-time">1시간 전</div>
+            </div>
+          </div>
+          <div class="activity-item">
+            <div class="act-avatar">정</div>
+            <div class="act-content">
+              <div class="act-title">정하은 선생님이 새 교보재를 평가했습니다</div>
+              <div class="act-desc">인권 카드게임 · 종합 22/25점</div>
+              <div class="act-time">3시간 전</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <div class="icon" style="background:#EDE6F5; color:#7B6BA0">📌</div>
+          공지사항
+        </div>
+        <div style="font-size:13px; color:var(--text-sub); line-height:1.8;">
+          <p>• 2학기 수행평가 자료 공유 이벤트 진행 중</p>
+          <p>• 에듀큐레이터 2기 모집 (~4/15)</p>
+          <p>• 2022 개정 교육과정 단원 매핑 업데이트</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ARCHIVE (수업자료) ===== -->
+<div id="page-archive" class="page-section">
+  <div class="section-header">
+    <h1>수업자료 아카이브</h1>
+    <p>교육과정 · 단원별로 정리된 수업자료를 검색하세요. 다른 출판사의 동일 주제 자료도 함께 보여드립니다.</p>
+  </div>
+
+  <div class="archive-layout">
+    <!-- 왼쪽 필터 -->
+    <div class="sidebar-filter">
+      <div class="filter-group">
+        <h3>교과서 선택</h3>
+        <div class="filter-options">
+          <div class="filter-option active">비상교육 사회②</div>
+          <div class="filter-option">금성 사회②</div>
+          <div class="filter-option">미래엔 사회②</div>
+          <div class="filter-option">천재 사회②</div>
+        </div>
+      </div>
+      <div class="filter-group">
+        <h3>단원</h3>
+        <div class="filter-options">
+          <div class="filter-option">전체</div>
+          <div class="filter-option">1. 인권과 헌법</div>
+          <div class="filter-option">2. 헌법과 국가기관</div>
+          <div class="filter-option active">3. 경제생활과 선택</div>
+          <div class="filter-option">4. 시장경제와 가격</div>
+          <div class="filter-option">5. 국민경제와 국제거래</div>
+          <div class="filter-option">6. 국제사회와 국제정치</div>
+        </div>
+      </div>
+      <div class="filter-group">
+        <h3>자료 유형</h3>
+        <div class="filter-options">
+          <div class="filter-option">전체</div>
+          <div class="filter-option">PPT</div>
+          <div class="filter-option">학습지 / 활동지</div>
+          <div class="filter-option active">수행평가 루브릭</div>
+          <div class="filter-option">생기부 세특 문구</div>
+          <div class="filter-option">교구 활용법</div>
+          <div class="filter-option">영상자료</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 오른쪽 자료 목록 -->
+    <div class="resource-grid">
+      <div style="background:var(--bg-warm); border-radius:var(--radius); padding:12px 16px; font-size:13px; color:var(--text-sub); margin-bottom:4px;">
+        📎 <strong>3단원 경제생활과 선택</strong>에 해당하는 자료 56건 · 금성 4단원, 미래엔 3단원 자료 포함
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type-badge badge-rubric">📋</div>
+        <div class="resource-info">
+          <h4>합리적 선택 모둠 토론 수행평가 루브릭</h4>
+          <div class="resource-meta">
+            <span>박민지 선생님</span>
+            <span>·</span>
+            <span>비상교육 3단원</span>
+            <span>·</span>
+            <span>2026.03.28</span>
+          </div>
+          <div class="resource-tags">
+            <span class="tag tag-unit">3단원 경제생활</span>
+            <span class="tag tag-type">수행평가 루브릭</span>
+            <span class="tag">모둠토론</span>
+          </div>
+        </div>
+        <div class="resource-stats">
+          <div class="stat">다운로드 <strong>128</strong></div>
+          <div class="stat">좋아요 <strong>47</strong></div>
+        </div>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type-badge badge-ppt">📊</div>
+        <div class="resource-info">
+          <h4>기회비용과 합리적 선택 수업 PPT (30슬라이드)</h4>
+          <div class="resource-meta">
+            <span>김하영 선생님</span>
+            <span>·</span>
+            <span>금성 4단원 (= 비상 3단원)</span>
+            <span>·</span>
+            <span>2026.03.25</span>
+          </div>
+          <div class="resource-tags">
+            <span class="tag tag-unit">3단원 경제생활</span>
+            <span class="tag tag-type">PPT</span>
+            <span class="tag">🔗 금성→비상 매핑</span>
+          </div>
+        </div>
+        <div class="resource-stats">
+          <div class="stat">다운로드 <strong>89</strong></div>
+          <div class="stat">좋아요 <strong>32</strong></div>
+        </div>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type-badge badge-worksheet">📝</div>
+        <div class="resource-info">
+          <h4>생기부 세특 문구 예시 — 경제생활 단원 (10종)</h4>
+          <div class="resource-meta">
+            <span>이수현 선생님</span>
+            <span>·</span>
+            <span>비상교육 3단원</span>
+            <span>·</span>
+            <span>2026.03.20</span>
+          </div>
+          <div class="resource-tags">
+            <span class="tag tag-unit">3단원 경제생활</span>
+            <span class="tag tag-type">생기부 세특</span>
+            <span class="tag">2학기</span>
+          </div>
+        </div>
+        <div class="resource-stats">
+          <div class="stat">다운로드 <strong>215</strong></div>
+          <div class="stat">좋아요 <strong>98</strong></div>
+        </div>
+      </div>
+
+      <div class="resource-card">
+        <div class="resource-type-badge badge-idea">💡</div>
+        <div class="resource-info">
+          <h4>[교구활용] 시장경제 보드게임으로 기회비용 체험 수업</h4>
+          <div class="resource-meta">
+            <span>정하은 선생님 · 에듀큐레이터</span>
+            <span>·</span>
+            <span>비상 3~4단원 연계</span>
+            <span>·</span>
+            <span>2026.03.18</span>
+          </div>
+          <div class="resource-tags">
+            <span class="tag tag-unit">3단원 경제생활</span>
+            <span class="tag tag-unit">4단원 시장경제</span>
+            <span class="tag tag-type">교구 활용법</span>
+          </div>
+        </div>
+        <div class="resource-stats">
+          <div class="stat">다운로드 <strong>67</strong></div>
+          <div class="stat">좋아요 <strong>41</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== REVIEW (교보재 평가) ===== -->
+<div id="page-review" class="page-section">
+  <div class="section-header">
+    <h1>교보재 평가</h1>
+    <p>에듀큐레이터가 직접 수업에서 사용하고 평가한 교보재입니다. 활용 가능 단원과 점수를 확인하세요.</p>
+  </div>
+
+  <div class="review-grid">
+    <!-- 교구 1 -->
+    <div class="review-card">
+      <div class="review-card-img">
+        🎲
+        <div class="verified-badge">✓ 에듀큐레이터 검증</div>
+      </div>
+      <div class="review-card-body">
+        <h3>시장경제 탐험 보드게임</h3>
+        <p class="maker">한국교육콘텐츠연구소</p>
+        <div class="score-bar"><div class="score-bar-fill" style="width:88%"></div></div>
+        <div class="score-grid">
+          <div class="score-item">
+            <span class="score-label">교육과정 연계</span>
+            <span class="score-value">5.0</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">학생 몰입도</span>
+            <span class="score-value">4.5</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">수행평가 활용</span>
+            <span class="score-value">4.5</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">수업 준비 용이</span>
+            <span class="score-value">4.0</span>
+          </div>
+        </div>
+        <div class="review-units">
+          <span class="review-unit-tag">비상 3단원 경제생활</span>
+          <span class="review-unit-tag">비상 4단원 시장경제</span>
+          <span class="review-unit-tag">금성 4~5단원</span>
+        </div>
+      </div>
+      <div class="review-card-footer">
+        <span>평가자 3명 · 활용 아이디어 7건</span>
+        <span>종합 <strong style="color:var(--primary)">22/25</strong></span>
+      </div>
+    </div>
+
+    <!-- 교구 2 -->
+    <div class="review-card">
+      <div class="review-card-img">
+        🃏
+        <div class="verified-badge">✓ 에듀큐레이터 검증</div>
+      </div>
+      <div class="review-card-body">
+        <h3>인권 토론 카드게임</h3>
+        <p class="maker">문화놀이터 뜻</p>
+        <div class="score-bar"><div class="score-bar-fill" style="width:84%"></div></div>
+        <div class="score-grid">
+          <div class="score-item">
+            <span class="score-label">교육과정 연계</span>
+            <span class="score-value">4.5</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">학생 몰입도</span>
+            <span class="score-value">5.0</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">수행평가 활용</span>
+            <span class="score-value">4.0</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">수업 준비 용이</span>
+            <span class="score-value">4.5</span>
+          </div>
+        </div>
+        <div class="review-units">
+          <span class="review-unit-tag">비상 1단원 인권</span>
+          <span class="review-unit-tag">미래엔 1단원</span>
+        </div>
+      </div>
+      <div class="review-card-footer">
+        <span>평가자 2명 · 활용 아이디어 4건</span>
+        <span>종합 <strong style="color:var(--primary)">21/25</strong></span>
+      </div>
+    </div>
+
+    <!-- 교구 3 -->
+    <div class="review-card">
+      <div class="review-card-img">
+        🌏
+        <div class="verified-badge">✓ 에듀큐레이터 검증</div>
+      </div>
+      <div class="review-card-body">
+        <h3>세계시민 역할극 시뮬레이션</h3>
+        <p class="maker">학교네</p>
+        <div class="score-bar"><div class="score-bar-fill" style="width:76%"></div></div>
+        <div class="score-grid">
+          <div class="score-item">
+            <span class="score-label">교육과정 연계</span>
+            <span class="score-value">4.0</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">학생 몰입도</span>
+            <span class="score-value">4.5</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">수행평가 활용</span>
+            <span class="score-value">3.5</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">수업 준비 용이</span>
+            <span class="score-value">3.5</span>
+          </div>
+        </div>
+        <div class="review-units">
+          <span class="review-unit-tag">비상 6단원 국제사회</span>
+          <span class="review-unit-tag">천재 6단원</span>
+        </div>
+      </div>
+      <div class="review-card-footer">
+        <span>평가자 2명 · 활용 아이디어 3건</span>
+        <span>종합 <strong style="color:var(--primary)">19/25</strong></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COMMUNITY ===== -->
+<div id="page-community" class="page-section">
+  <div class="section-header">
+    <h1>커뮤니티</h1>
+    <p>사회교과 선생님들의 수업 고민, 시사 이슈 활용법, 자유로운 이야기를 나누는 공간입니다.</p>
+  </div>
+
+  <div class="community-layout">
+    <div class="post-list">
+      <div class="post-card">
+        <div class="post-header">
+          <div class="post-avatar">이</div>
+          <div>
+            <div class="post-author">이수현 선생님</div>
+            <div class="post-time">30분 전</div>
+          </div>
+        </div>
+        <span class="post-category cat-qna">수업 Q&A</span>
+        <div class="post-title">중2 시장경제 단원에서 모둠 토론 수행평가 어떻게 설계하시나요?</div>
+        <div class="post-excerpt">올해 처음 2학년 담당하게 됐는데, 시장경제 단원 수행평가를 모둠 토론으로 하려고 합니다. 기존에 하셨던 선생님들은 루브릭을 어떻게 잡으셨는지 궁금해요. 특히 무임승차 방지 방법이 고민입니다...</div>
+        <div class="post-footer">
+          <span>💬 댓글 12</span>
+          <span>❤️ 좋아요 34</span>
+          <span>👁 조회 156</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-header">
+          <div class="post-avatar">정</div>
+          <div>
+            <div class="post-author">정하은 선생님</div>
+            <div class="post-time">2시간 전</div>
+          </div>
+        </div>
+        <span class="post-category cat-discuss">시사 이슈 수업</span>
+        <div class="post-title">[시사활용] 최근 환율 변동을 5단원 국민경제 수업에 활용하는 방법</div>
+        <div class="post-excerpt">요즘 원/달러 환율 변동이 커서 아이들이 실생활에서 느끼는 부분이 있더라고요. 5단원 국민경제와 국제거래 수업 도입에 최근 뉴스 기사를 활용해봤는데 반응이 좋았어요. 구체적인 활동지 공유합니다.</div>
+        <div class="post-footer">
+          <span>💬 댓글 8</span>
+          <span>❤️ 좋아요 52</span>
+          <span>👁 조회 203</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-header">
+          <div class="post-avatar">김</div>
+          <div>
+            <div class="post-author">김지현 선생님</div>
+            <div class="post-time">4시간 전</div>
+          </div>
+        </div>
+        <span class="post-category cat-news">교육정책</span>
+        <div class="post-title">2022 개정 교육과정 중2 적용 관련 — 올해 달라지는 점 정리</div>
+        <div class="post-excerpt">내년부터 중2도 2022 개정이 적용되는데, 현재 중1 수업하면서 느낀 점과 달라지는 부분을 정리해봤습니다. 성취기준 변화가 꽤 있어서 미리 준비하시면 좋을 것 같아요.</div>
+        <div class="post-footer">
+          <span>💬 댓글 21</span>
+          <span>❤️ 좋아요 87</span>
+          <span>👁 조회 412</span>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="post-header">
+          <div class="post-avatar">윤</div>
+          <div>
+            <div class="post-author">윤서아 선생님</div>
+            <div class="post-time">어제</div>
+          </div>
+        </div>
+        <span class="post-category cat-free">자유 게시판</span>
+        <div class="post-title">오늘 수업에서 아이들이 해준 말이 뭉클했어요 🥹</div>
+        <div class="post-excerpt">인권 단원 마무리하면서 아이들에게 "우리 주변에서 인권이 존중받지 못하는 사례"를 발표시켰는데, 한 학생이 "선생님도 쉬는 시간에 쉬어야 인권이에요"라고...</div>
+        <div class="post-footer">
+          <span>💬 댓글 35</span>
+          <span>❤️ 좋아요 124</span>
+          <span>👁 조회 567</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 사이드 위젯 -->
+    <div>
+      <div class="card widget">
+        <div class="widget-title">🔥 인기 글</div>
+        <div class="popular-list">
+          <div class="popular-item">
+            <span class="rank">1</span>
+            <a href="#">생기부 세특 작성, 단원별 키워드 모음 (사회②)</a>
+          </div>
+          <div class="popular-item">
+            <span class="rank r2">2</span>
+            <a href="#">1학기 중간고사 서술형 문항 공유 (3~4단원)</a>
+          </div>
+          <div class="popular-item">
+            <span class="rank r3">3</span>
+            <a href="#">자유학기제 주제탐구 활동 — 경제 분야 아이디어</a>
+          </div>
+        </div>
+      </div>
+      <div class="card widget">
+        <div class="widget-title">🏷 인기 태그</div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px;">
+          <span class="tag">#수행평가</span>
+          <span class="tag">#생기부세특</span>
+          <span class="tag">#시장경제</span>
+          <span class="tag">#모둠활동</span>
+          <span class="tag">#인권</span>
+          <span class="tag">#자유학기</span>
+          <span class="tag">#서술형문항</span>
+          <span class="tag">#2022개정</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main-app -->
+
+<script>
+function showMain() {
+  document.getElementById('page-login').style.display = 'none';
+  document.getElementById('main-app').style.display = 'block';
+}
+
+function showPage(pageId) {
+  document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + pageId).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// Textbook selector interaction
+document.querySelectorAll('.textbook-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    this.parentElement.querySelectorAll('.textbook-btn').forEach(b => b.classList.remove('selected'));
+    this.classList.add('selected');
+  });
+});
+
+// Filter interaction
+document.querySelectorAll('.filter-option').forEach(opt => {
+  opt.addEventListener('click', function() {
+    this.parentElement.querySelectorAll('.filter-option').forEach(o => o.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
