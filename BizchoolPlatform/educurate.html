@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduCurate</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--p:#5B7B6A;--pl:#7A9E8A;--pd:#3D5A4A;--pbg:#EDF3EF;--a:#D4916E;--al:#E8B89A;--as:#F5DFD0;--abg:#FFF6F0;--bg:#FAFAF7;--bgw:#F5F2ED;--bgc:#FFF;--t:#2C2C2C;--ts:#6B6B6B;--tl:#9B9B9B;--b:#E8E4DE;--bl:#F0ECE6;--pp:#7B6BA0;--ppbg:#F0EBF5;--star:#E8B44D;--red:#E05252;--sh:0 1px 3px rgba(0,0,0,.04);--shm:0 4px 12px rgba(0,0,0,.06);--shl:0 12px 32px rgba(0,0,0,.08)}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--t);line-height:1.7;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}button{cursor:pointer;font-family:inherit}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--b);border-radius:3px}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--bl);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.nav-logo{display:flex;align-items:center;gap:8px;font-family:'Noto Serif KR',serif;font-weight:700;font-size:17px;color:var(--pd)}.nav-logo i{width:30px;height:30px;background:var(--p);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-style:normal}
+
+.nav-c{display:flex;align-items:center;gap:2px}.nav-c a{padding:5px 12px;border-radius:8px;font-size:12.5px;font-weight:500;color:var(--ts);transition:.2s}.nav-c a:hover{background:var(--bgw)}.nav-c a.on{background:var(--p);color:#fff}
+.nav-r{display:flex;align-items:center;gap:8px}.nav-sr{width:32px;height:32px;border-radius:50%;background:var(--bgw);border:none;display:flex;align-items:center;justify-content:center;font-size:15px}.nav-sr:hover{background:var(--bl)}
+.nav-bell{position:relative}.bell-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;background:var(--red);border-radius:50%;border:1.5px solid #fff}
+.nav-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;cursor:pointer;border:2px solid transparent}.nav-av:hover{border-color:var(--pl)}
+.notif-dd{position:absolute;top:44px;right:-40px;width:320px;background:#fff;border-radius:16px;box-shadow:var(--shl);border:1px solid var(--bl);display:none;z-index:300;max-height:360px;overflow-y:auto}.notif-dd.show{display:block}.notif-dd h4{padding:12px 16px;font-size:13px;font-weight:600;border-bottom:1px solid var(--bl);position:sticky;top:0;background:#fff;z-index:1}
+.ni{display:flex;gap:9px;padding:10px 16px;border-bottom:1px solid var(--bl);cursor:pointer;transition:.15s;font-size:12px;color:var(--ts)}.ni:hover{background:var(--bgw)}.ni b{color:var(--t)}.ni .nt{font-size:10.5px;color:var(--tl);margin-top:1px}
+.search-ov{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:250;display:none;align-items:flex-start;justify-content:center;padding-top:80px}.search-ov.show{display:flex}.search-box{background:#fff;border-radius:16px;width:100%;max-width:560px;box-shadow:var(--shl);overflow:hidden}.search-box input{width:100%;padding:16px 20px;border:none;font-size:15px;font-family:inherit;outline:none}.search-results{max-height:400px;overflow-y:auto;border-top:1px solid var(--bl)}.sr-item{display:flex;gap:10px;padding:12px 20px;cursor:pointer;align-items:center}.sr-item:hover{background:var(--bgw)}.sr-item .sr-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}.sr-item .sr-t{font-size:13px;font-weight:500}.sr-item .sr-m{font-size:11.5px;color:var(--tl)}
+.pg{padding:70px 24px 50px;max-width:1080px;margin:0 auto;display:none}.pg.on{display:block}
+.pg-h{margin-bottom:22px}.pg-h h1{font-family:'Noto Serif KR',serif;font-size:22px;font-weight:700;color:var(--pd);margin-bottom:3px}.pg-h p{font-size:13px;color:var(--ts)}
+.cd{background:var(--bgc);border:1px solid var(--bl);border-radius:16px;padding:18px;box-shadow:var(--sh);transition:.2s}.cd:hover{box-shadow:var(--shm)}
+.tg{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10.5px;font-weight:500;background:var(--bgw);color:var(--ts)}.tg-g{background:var(--pbg);color:var(--pd)}.tg-o{background:var(--abg);color:var(--a)}.tg-p{background:var(--ppbg);color:var(--pp)}.tg-map{background:#FFF8E1;color:#9E8530}
+.bt{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;border:1px solid transparent;transition:.2s}.bt-p{background:var(--p);color:#fff;border-color:var(--p)}.bt-p:hover{background:var(--pd)}.bt-o{background:var(--bgw);color:var(--ts);border-color:var(--b)}.bt-o:hover{background:#EDE9E2}.bt-s{padding:5px 10px;font-size:11px}.bt.on{background:var(--p);color:#fff;border-color:var(--p)}
+.bdg{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;background:var(--p);color:#fff}
+/* Teacher levels */
+.lv{display:inline-flex;align-items:center;gap:2px;font-size:10px;font-weight:600;padding:1px 6px;border-radius:8px}
+.lv-seed{background:#E8F5E9;color:#4CAF50}.lv-grow{background:#E3F2FD;color:#2196F3}.lv-vet{background:#FFF3E0;color:#FF9800}.lv-star{background:var(--pbg);color:var(--p)}
+/* Reactions */
+.reactions{display:flex;gap:4px;border-top:1px solid var(--bl)}.reactions button{flex:1;padding:8px;background:none;border:none;font-size:11.5px;color:var(--ts);font-weight:500;display:flex;align-items:center;justify-content:center;gap:3px;transition:.15s;border-right:1px solid var(--bl)}.reactions button:last-child{border-right:none}.reactions button:hover{background:var(--bgw)}.reactions button.on{font-weight:700}
+.reactions button.r1.on{color:var(--red)}.reactions button.r2.on{color:var(--pp)}.reactions button.r3.on{color:var(--p)}
+/* Trending bar */
+
+.hero{background:linear-gradient(135deg,var(--pd),var(--p));color:#fff;border-radius:20px;padding:22px 26px;margin-bottom:14px}.hero h2{font-family:'Noto Serif KR',serif;font-size:19px;margin-bottom:4px}.hero p{font-size:13px;opacity:.9}
+.hero-st{display:flex;gap:10px;margin-top:12px}.hero-s{background:rgba(255,255,255,.15);border-radius:8px;padding:9px 12px;flex:1;text-align:center}.hero-s b{font-size:17px;display:block}.hero-s span{font-size:10.5px;opacity:.8}
+.g2{display:grid;grid-template-columns:1fr 280px;gap:18px}.g-ar{display:grid;grid-template-columns:210px 1fr;gap:18px}
+.f-sb{position:sticky;top:70px}.f-grp{margin-bottom:14px}.f-grp h3{font-size:11px;font-weight:600;color:var(--tl);letter-spacing:.4px;margin-bottom:6px;text-transform:uppercase}
+.f-i{padding:5px 10px;border-radius:8px;font-size:11.5px;color:var(--ts);cursor:pointer;transition:.15s;margin-bottom:1px}.f-i:hover{background:var(--bgw)}.f-i.on{background:var(--p);color:#fff;font-weight:500}.f-i.accent{color:var(--a)}
+.rc{display:flex;gap:12px;padding:14px;background:var(--bgc);border:1px solid var(--bl);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:.2s;box-shadow:var(--sh)}.rc:hover{box-shadow:var(--shm);transform:translateY(-1px)}
+.rc-ic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}.rc-bd{flex:1;min-width:0}.rc-bd h4{font-size:13px;font-weight:600;margin-bottom:2px}.rc-bd .meta{font-size:11px;color:var(--tl);margin-bottom:5px}.rc-bd .tags{display:flex;gap:4px;flex-wrap:wrap}.rc-st{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:2px;flex-shrink:0;font-size:11px;color:var(--tl)}.rc-st b{color:var(--ts)}
+.det-back{font-size:12px;color:var(--tl);cursor:pointer;margin-bottom:12px;display:inline-block}.det-back:hover{color:var(--p)}
+.det-hd{background:var(--bgc);border:1px solid var(--bl);border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:var(--sh)}.det-hd h1{font-size:18px;font-weight:700;margin-bottom:3px}.det-hd .dmeta{font-size:12.5px;color:var(--ts);margin-bottom:8px}.det-hd .desc{font-size:13px;color:var(--ts);line-height:1.8;padding:14px;background:var(--bg);border-radius:8px;margin:10px 0}
+.det-hd .filebox{display:flex;align-items:center;gap:10px;padding:12px;background:var(--bgw);border-radius:8px;margin:10px 0}.det-hd .filebox .fic{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.det-acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}.det-acts button{display:flex;align-items:center;gap:4px}
+.cmt-sec{background:var(--bgc);border:1px solid var(--bl);border-radius:16px;padding:18px;box-shadow:var(--sh)}.cmt-sec h3{font-size:14px;font-weight:600;margin-bottom:12px}
+.cmt{display:flex;gap:9px;padding-bottom:12px;margin-bottom:12px;border-bottom:1px solid var(--bl)}.cmt:last-of-type{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.cmt .cb{flex:1}.cmt .cb .cn{font-size:12px;font-weight:600}.cmt .cb .ct{font-size:10.5px;color:var(--tl);margin-left:5px}.cmt .cb .cx{font-size:12.5px;color:var(--ts);margin-top:2px;line-height:1.7}
+.cmt .cb .cr{margin-top:4px;display:flex;gap:10px;font-size:11px;color:var(--tl)}.cmt .cb .cr span{cursor:pointer}.cmt .cb .cr span:hover{color:var(--p)}.cmt .cb .cr span.liked-c{color:var(--red)}
+.cmt-inp{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--bl)}.cmt-inp input{flex:1;padding:8px 12px;border:1.5px solid var(--b);border-radius:16px;font-size:12px;font-family:inherit}.cmt-inp input:focus{outline:none;border-color:var(--p)}.cmt-inp button{padding:8px 16px;background:var(--p);color:#fff;border:none;border-radius:16px;font-size:12px;font-weight:600}
+/* Professional review */
+.rv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.rv-cd{background:var(--bgc);border:1px solid var(--bl);border-radius:16px;overflow:hidden;cursor:pointer;transition:.2s;box-shadow:var(--sh)}.rv-cd:hover{box-shadow:var(--shl);transform:translateY(-2px)}
+.rv-img{height:120px;background:var(--bgw);display:flex;align-items:center;justify-content:center;font-size:40px;position:relative}
+.rvd-top{display:flex;gap:22px;padding:22px}.rvd-img{width:160px;height:160px;background:var(--bgw);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:52px;flex-shrink:0}
+.rvd-info{flex:1}.rvd-info h1{font-size:20px;font-weight:700;margin-bottom:2px}.rvd-info .mk{font-size:13px;color:var(--ts);margin-bottom:8px}
+.sc-big{display:flex;align-items:baseline;gap:6px;margin-bottom:12px}.sc-big .n{font-size:32px;font-weight:700;color:var(--pd)}.sc-big .o{font-size:14px;color:var(--tl)}.sc-big .s{color:var(--star);font-size:16px}
+.sc-bars{display:grid;grid-template-columns:1fr 1fr;gap:7px}.sc-bar{display:flex;align-items:center;gap:7px}.sc-bar .lb{font-size:11.5px;color:var(--ts);width:90px;flex-shrink:0}.sc-bar .bar{flex:1;height:6px;background:var(--bl);border-radius:3px;overflow:hidden}.sc-bar .bar .fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--pl),var(--p))}.sc-bar .vl{font-size:12px;font-weight:700;color:var(--pd);width:26px;text-align:right}
+/* Pro eval card */
+.pev{background:var(--bgc);border:1px solid var(--bl);border-radius:16px;padding:0;margin-bottom:14px;box-shadow:var(--sh);overflow:hidden}
+.pev-hd{display:flex;align-items:center;gap:10px;padding:16px 20px;border-bottom:1px solid var(--bl);background:var(--bg)}
+.pev-hd .nm{font-size:13.5px;font-weight:600}.pev-hd .mt{font-size:11px;color:var(--tl)}
+.pev-spec{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:14px 20px;border-bottom:1px solid var(--bl);background:var(--bgw)}
+.pev-spec .sp-item{text-align:center}.pev-spec .sp-item .sp-v{font-size:14px;font-weight:700;color:var(--pd)}.pev-spec .sp-item .sp-l{font-size:10px;color:var(--tl)}
+.pev-scores{display:flex;gap:6px;padding:14px 20px;border-bottom:1px solid var(--bl);flex-wrap:wrap}
+.pev-scores span{padding:3px 10px;border-radius:8px;font-size:11px;font-weight:500;background:var(--bgw)}
+.pev-body{padding:16px 20px}
+.pev-section{margin-bottom:14px}.pev-section h4{font-size:12.5px;font-weight:600;color:var(--pd);margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.pev-list{list-style:none;padding:0}.pev-list li{font-size:12.5px;color:var(--ts);line-height:1.7;padding:4px 0;padding-left:20px;position:relative}.pev-list li::before{content:'';position:absolute;left:6px;top:11px;width:6px;height:6px;border-radius:50%}
+.pev-list.pros li::before{background:#4CAF50}.pev-list.cons li::before{background:var(--a)}
+.pev-timeline{border-left:2px solid var(--pl);padding-left:16px;margin-left:8px}
+.pev-timeline .tl-item{margin-bottom:10px;position:relative}.pev-timeline .tl-item::before{content:'';position:absolute;left:-21px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--p);border:2px solid #fff}
+.pev-timeline .tl-item .tl-t{font-size:11px;font-weight:600;color:var(--p)}.pev-timeline .tl-item .tl-d{font-size:12px;color:var(--ts)}
+.pev-recommend{padding:12px 20px;background:var(--pbg);border-top:1px solid var(--bl);font-size:12px;color:var(--pd)}
+/* Feed */
+.fp{background:var(--bgc);border:1px solid var(--bl);border-radius:16px;overflow:hidden;margin-bottom:12px;box-shadow:var(--sh)}
+.fp-hd{display:flex;align-items:center;gap:9px;padding:12px 15px}.fp-hd .nm{font-size:13px;font-weight:600}.fp-hd .mt{font-size:11px;color:var(--tl)}
+.fp-bd{padding:0 15px 11px;cursor:pointer}.fp-bd .tt{font-size:13.5px;font-weight:600;margin-bottom:4px}.fp-bd .dx{font-size:12.5px;color:var(--ts);line-height:1.7}
+.fp-tg{padding:0 15px 8px;display:flex;gap:4px;flex-wrap:wrap}
+.fp-preview{margin:0 15px 10px;padding:12px;background:var(--bgw);border-radius:10px;display:flex;align-items:center;gap:10px}
+.fp-preview .pv-ic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.fp-preview .pv-info{font-size:12px}.fp-preview .pv-info b{font-weight:600;display:block;margin-bottom:1px}.fp-preview .pv-info span{color:var(--tl);font-size:11px}
+/* Community */
+.cp{background:var(--bgc);border:1px solid var(--bl);border-radius:12px;padding:16px;margin-bottom:8px;cursor:pointer;transition:.15s;box-shadow:var(--sh)}.cp:hover{box-shadow:var(--shm)}
+.cp-cat{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10.5px;font-weight:600;margin-bottom:6px}
+.cat-qna{background:var(--pbg);color:var(--p)}.cat-discuss{background:var(--ppbg);color:var(--pp)}.cat-news{background:var(--abg);color:var(--a)}.cat-free{background:var(--bgw);color:var(--ts)}
+.cp h4{font-size:13.5px;font-weight:600;margin-bottom:3px}.cp .dx{font-size:12.5px;color:var(--ts);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.cp-ft{display:flex;gap:12px;margin-top:8px;font-size:11.5px;color:var(--tl)}
+/* My page */
+.my-hd{display:flex;gap:22px;align-items:center;padding:22px;background:var(--bgc);border-radius:20px;border:1px solid var(--bl);margin-bottom:18px;box-shadow:var(--sh)}
+.my-av-wrap{position:relative;cursor:pointer}.my-av-wrap:hover .av-edit{opacity:1}
+.my-av{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;font-weight:700;flex-shrink:0}
+.av-edit{position:absolute;bottom:0;right:0;width:24px;height:24px;border-radius:50%;background:var(--p);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;border:2px solid #fff;opacity:0;transition:.2s}
+.my-inf{flex:1}.my-inf h2{font-family:'Noto Serif KR',serif;font-size:18px;font-weight:700;margin-bottom:1px}.my-inf .sub{font-size:12.5px;color:var(--ts);margin-bottom:7px}
+.my-sts{display:flex;gap:16px}.my-sts div{text-align:center}.my-sts div b{display:block;font-size:16px}.my-sts div span{font-size:10.5px;color:var(--tl)}
+.my-tabs{display:flex;gap:2px;margin-bottom:16px;border-bottom:2px solid var(--bl)}.my-tab{padding:8px 14px;font-size:12.5px;font-weight:500;color:var(--tl);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.2s}.my-tab.on{color:var(--pd);border-bottom-color:var(--p);font-weight:600}
+.my-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.my-cd{background:var(--bgc);border:1px solid var(--bl);border-radius:12px;padding:14px;position:relative;cursor:pointer;transition:.2s}.my-cd:hover{box-shadow:var(--shm)}.my-cd .tp{font-size:20px;margin-bottom:5px}.my-cd h4{font-size:13px;font-weight:600;margin-bottom:2px}.my-cd .mt{font-size:11px;color:var(--tl)}.my-cd .vis{position:absolute;top:9px;right:9px;font-size:10px;padding:2px 6px;border-radius:6px}.vis-pub{background:var(--pbg);color:var(--p)}.vis-pri{background:var(--bgw);color:var(--tl)}
+.act-item{display:flex;gap:10px;padding:10px 12px;border-radius:8px;background:var(--bg);margin-bottom:6px;font-size:12px;color:var(--ts);align-items:center}
+.act-item .ai-ic{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}.act-item .ai-t{font-size:10.5px;color:var(--tl);margin-top:1px}
+.modal-ov{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:200;display:none;align-items:center;justify-content:center}.modal-ov.show{display:flex}
+.modal{background:#fff;border-radius:20px;padding:26px;width:100%;max-width:440px;max-height:80vh;overflow-y:auto;box-shadow:var(--shl)}
+.modal h2{font-family:'Noto Serif KR',serif;font-size:17px;margin-bottom:2px}.modal .ms{font-size:12px;color:var(--ts);margin-bottom:16px}
+.fg{margin-bottom:12px}.fg label{display:block;font-size:11.5px;font-weight:500;color:var(--ts);margin-bottom:3px}.fg input,.fg select,.fg textarea{width:100%;padding:8px 12px;border:1.5px solid var(--b);border-radius:8px;font-size:12.5px;font-family:inherit;background:#fff}.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--p)}.fg textarea{resize:vertical;min-height:60px}
+.cb-grid{display:flex;flex-wrap:wrap;gap:5px}.cb-i{padding:4px 10px;border-radius:8px;border:1.5px solid var(--b);font-size:11.5px;cursor:pointer;transition:.2s;background:#fff}.cb-i:hover{border-color:var(--pl)}.cb-i.ck{background:var(--pbg);border-color:var(--p);color:var(--pd);font-weight:500}
+.sp-cat{background:linear-gradient(135deg,var(--as),var(--abg));border:1px solid var(--al);border-radius:12px;padding:10px;margin-top:8px}.sp-cat h4{font-size:12px;font-weight:600;color:var(--a);margin-bottom:5px}.sp-cat .si{display:inline-block;padding:3px 9px;border-radius:11px;font-size:11px;background:#fff;color:var(--a);font-weight:500;cursor:pointer;border:1px solid var(--al);margin:2px}.sp-cat .si:hover{background:var(--a);color:#fff}
+.av-colors{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.av-c{width:40px;height:40px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:.2s}.av-c:hover,.av-c.sel{border-color:var(--pd);transform:scale(1.1)}
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#F5F2ED,#E8E4DE,#D8E0D8);padding:40px}.lcard{background:#fff;border-radius:20px;box-shadow:var(--shl);padding:36px;width:100%;max-width:380px;text-align:center}.lcard .lb{width:48px;height:48px;background:var(--p);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;font-family:'Noto Serif KR',serif;font-weight:700;margin:0 auto 12px}.lcard h1{font-family:'Noto Serif KR',serif;font-size:19px;color:var(--pd);margin-bottom:4px}.lcard .st{font-size:12.5px;color:var(--ts);margin-bottom:18px}
+.ln{background:var(--bgw);border-radius:8px;padding:11px;margin-bottom:16px;text-align:left}.ln h3{font-size:11.5px;font-weight:600;color:var(--pd);margin-bottom:2px}.ln p{font-size:11px;color:var(--ts);line-height:1.5}
+.empty{padding:30px;text-align:center;color:var(--tl);font-size:12.5px}
+@media(max-width:900px){.nav-c{display:none}.pg{padding:64px 12px 60px}.g2,.g-ar{grid-template-columns:1fr}.rvd-top{flex-direction:column;align-items:center;text-align:center}.my-hd{flex-direction:column;text-align:center}.my-sts{justify-content:center}}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div id="login" class="login"><div class="lcard"><div class="lb">E</div><h1>EduCurate</h1><p class="st">중등 사회교과 교사 전용 플랫폼</p><div class="ln"><h3>🔒 교사 인증 가입제</h3><p>현직 중등 사회교과 교사만 가입 가능합니다.</p></div><button class="bt bt-p" style="width:100%;padding:11px;font-size:13.5px" onclick="startApp()">로그인 / 가입</button></div></div>
+<div id="app" style="display:none">
+<nav class="nav">
+<div class="nav-logo"><i>E</i>EduCurate</div>
+<div class="nav-c" id="navC"></div>
+<div class="nav-r"><button class="nav-sr" onclick="toggleSearch()">🔍</button><button class="nav-sr nav-bell" onclick="toggleNotif(event)">🔔<div class="bell-dot" id="bellDot"></div><div class="notif-dd" id="notifDD"></div></button><div class="nav-av" id="navAv" onclick="go('mypage')">김</div></div>
+</nav>
+<div class="search-ov" id="searchOv" onclick="if(event.target===this)this.classList.remove('show')"><div class="search-box"><input placeholder="자료, 교보재, 게시글 검색..." oninput="doSearch(this.value)" id="searchInp"><div class="search-results" id="searchRes"></div></div></div>
+<div id="pages"></div>
+</div>
+<div class="modal-ov" id="shareModal" onclick="if(event.target===this)this.classList.remove('show')"><div class="modal"><h2>📤 자료 공유</h2><p class="ms">단원을 선택하면 선생님들에게 공유됩니다.</p><div class="fg"><label>제목</label><input placeholder="예: 3단원 수행평가 루브릭"></div><div class="fg"><label>설명</label><textarea placeholder="활용 방법"></textarea></div><div class="fg"><label>유형</label><select><option>PPT</option><option>학습지</option><option>루브릭</option><option>세특</option><option>교구 활용법</option><option>서술형</option></select></div><div class="fg"><label>단원</label><div class="cb-grid" id="mU"></div></div><div style="display:flex;gap:6px;margin-top:4px"><button class="bt bt-p" style="flex:1" onclick="closeM('shareModal')">공유</button><button class="bt bt-o" onclick="closeM('shareModal')">취소</button></div></div></div>
+<div class="modal-ov" id="avModal" onclick="if(event.target===this)this.classList.remove('show')"><div class="modal"><h2>프로필 변경</h2><p class="ms">아바타 색상 선택</p><div class="av-colors" id="avC"></div><div style="margin-top:12px"><button class="bt bt-p" style="width:100%" onclick="closeM('avModal')">완료</button></div></div></div>
+<script>
+// ══════ DATA ══════
+const PUB=[{id:'bisang',nm:'비상교육',u:['인권과 헌법','헌법과 국가기관','경제생활과 선택','시장경제와 가격','국민경제와 국제거래','국제사회와 국제정치']},{id:'kumsung',nm:'금성',u:['인권 보장과 헌법','헌법과 국가 기관','경제적 선택','시장과 경제활동','국민경제와 무역','국제 사회의 모습']},{id:'mirae',nm:'미래엔',u:['인권과 헌법','헌법과 국가기관','경제생활과 선택','시장과 가격','국민경제','국제사회와 국제기구']},{id:'chunjae',nm:'천재교육',u:['인권 보장과 헌법','국가기관과 국민','합리적 선택과 경제','시장경제와 가격','국민경제의 이해','국제사회의 이해']}];
+const TOP=['인권·헌법','헌법·국가기관','경제생활·선택','시장경제·가격','국민경제·국제거래','국제사회·정치'];
+const SCAT=['학기 초 오리엔테이션','기말 후 활동','자유학기제','학급 레크레이션','진로 탐색'];
+const TYPES=['PPT','학습지/활동지','수행평가 루브릭','생기부 세특','교구 활용법','영상자료','서술형 문항'];
+const TI={'PPT':'📊','학습지/활동지':'📝','수행평가 루브릭':'📋','생기부 세특':'📄','교구 활용법':'💡','영상자료':'🎬','서술형 문항':'✏️'};
+const TC={'PPT':['var(--abg)','var(--a)'],'학습지/활동지':['var(--pbg)','var(--p)'],'수행평가 루브릭':['var(--ppbg)','var(--pp)'],'생기부 세특':['#E8F0E8','#5B8C5A'],'교구 활용법':['#FFF8E1','#C4A33C'],'영상자료':['#E8EEF5','#5B7BA0'],'서술형 문항':['var(--bgw)','var(--ts)']};
+const T=['박민지','이수현','정하은','김지현','윤서아','장은수','최예린','한소희','조유진','김태희','이지은','송다현'];
+const TCL=[['var(--pbg)','var(--p)'],['var(--as)','var(--a)'],['var(--ppbg)','var(--pp)'],['#FFF8E1','#C4A33C'],['#E8EEF5','#5B7BA0'],['var(--bgw)','var(--ts)'],['#FCE4EC','#C0627E'],['#E0F2F1','#4DB6AC'],['#E8EAF6','#5C6BC0'],['#FFF8E1','#F9A825'],['#F3E5F5','#AB47BC'],['#E8F5E9','#66BB6A']];
+const LV=[{n:'🌱 새싹',c:'lv-seed'},{n:'🌿 성장',c:'lv-grow'},{n:'🌳 베테랑',c:'lv-vet'},{n:'⭐ 에듀큐레이터',c:'lv-star'}];
+const TLV=[3,3,3,1,2,1,0,0,2,1,0,1]; // teacher level indices
+const AVC=['linear-gradient(135deg,#7A9E8A,#5B7B6A)','linear-gradient(135deg,#E8B89A,#D4916E)','linear-gradient(135deg,#9E8AC0,#7B6BA0)','linear-gradient(135deg,#7BA0C0,#5B7BA0)','linear-gradient(135deg,#C0627E,#A04B6B)','linear-gradient(135deg,#4DB6AC,#2E8B7A)'];
+
+const R=[];
+[
+{t:'합리적 선택 모둠 토론 수행평가 루브릭',w:0,pb:'bisang',tp:2,ty:'수행평가 루브릭',ds:'3단원 수행평가 모둠 토론. 무임승차 방지를 위해 개인 기여도 항목 추가. "근거 제시의 구체성" 항목으로 교과서 정독 유도. 4인 1조 기준 설계.',dl:128,lk:47,dt:'2026-03-28',fl:'루브릭.hwp (42KB)',cm:[{w:3,tx:'루브릭 깔끔해서 바로 활용! 개인 기여도 항목이 좋았습니다.',tm:'3일 전',lk:8},{w:1,tx:'"상호 평가" 항목 추가하면 무임승차 거의 사라져요.',tm:'2일 전',lk:12},{w:4,tx:'3인 조 버전도 있나요? 인원이 애매해서 😅',tm:'1일 전',lk:3},{w:8,tx:'저는 5인 조로 변형해서 썼는데 역할 분담이 핵심이더라고요.',tm:'12시간 전',lk:5},{w:9,tx:'이번 학기 수행평가에 바로 적용했습니다. 감사합니다!',tm:'6시간 전',lk:7}]},
+{t:'기회비용과 합리적 선택 수업 PPT (30슬라이드)',w:3,pb:'kumsung',tp:2,ty:'PPT',ds:'기회비용 개념을 일상 사례로 풀어낸 PPT. 퀴즈 3개 배치로 집중력 유지. 금성 기준이지만 비상 3단원에서도 활용 가능.',dl:89,lk:32,dt:'2026-03-25',fl:'기회비용_PPT.pptx (8.2MB)',cm:[{w:2,tx:'슬라이드 15번 퀴즈가 아이들한테 먹혔습니다!',tm:'2일 전',lk:6},{w:5,tx:'금성 기준인데 비상에서도 잘 맞네요. 매핑 덕분에 찾았어요.',tm:'1일 전',lk:9},{w:10,tx:'디자인도 깔끔하고 학생들 반응 좋았습니다.',tm:'8시간 전',lk:4}]},
+{t:'생기부 세특 문구 예시 — 경제생활 단원 (10종)',w:1,pb:'bisang',tp:2,ty:'생기부 세특',ds:'3단원 세특 기재 10종. 모둠 토론, 보고서, 경제 신문 등 활동별 분류. 성취기준 코드 병기.',dl:215,lk:98,dt:'2026-03-20',fl:'세특_10종.hwp (38KB)',cm:[{w:0,tx:'세특 퀄리티가 높아서 그대로 활용하기 좋습니다.',tm:'4일 전',lk:15},{w:6,tx:'1단원 인권 세특도 만들 계획이 있으신가요?',tm:'2일 전',lk:4},{w:1,tx:'@최예린 네 다음 주에 올릴 예정이에요!',tm:'1일 전',lk:7},{w:11,tx:'성취기준 코드 병기가 정말 편리합니다. 세특 작성 시간이 반으로 줄었어요.',tm:'5시간 전',lk:11}]},
+{t:'[교구활용] 시장경제 보드게임으로 기회비용 체험',w:2,pb:'bisang',tp:2,ty:'교구 활용법',ds:'한국교육콘텐츠연구소 보드게임 3~4단원 연계 2차시 운영. 1차시 자유 거래, 2차시 정부 규제 카드 추가.',dl:67,lk:41,dt:'2026-03-18',fl:'수업지도안.pdf (1.5MB)',cm:[{w:4,tx:'규칙 설명 PPT가 시간을 많이 아껴줍니다.',tm:'5일 전',lk:11},{w:0,tx:'2차시 정부 규제 카드 아이디어가 탁월해요!',tm:'3일 전',lk:8},{w:9,tx:'중1한테도 해봤는데 살짝 어렵더라고요. 중2 이상 추천.',tm:'1일 전',lk:5}],prodLink:0},
+{t:'중간고사 서술형 문항 5제 — 경제생활',w:5,pb:'mirae',tp:2,ty:'서술형 문항',ds:'미래엔 3단원 기준 서술형 5개. 채점 루브릭+예시답안. 난이도 중~상.',dl:143,lk:56,dt:'2026-03-15',fl:'서술형_5제.hwp (52KB)',cm:[{w:3,tx:'채점 기준이 명확해서 채점 시간이 줄었어요.',tm:'4일 전',lk:7},{w:8,tx:'2번 자료 분석형 문항이 특히 좋았습니다.',tm:'2일 전',lk:5}]},
+{t:'경제 신문 만들기 활동지 (모둠+개인)',w:4,pb:'bisang',tp:2,ty:'학습지/활동지',ds:'3단원 마무리 활동. 모둠용(4인), 개인용 2버전. 기사, 광고, 사설 등 역할 분담.',dl:95,lk:38,dt:'2026-03-10',fl:'경제신문_활동지.hwp (65KB)',cm:[{w:7,tx:'아이들이 광고 만들기를 제일 좋아했어요 ㅋㅋ',tm:'1주 전',lk:9},{w:2,tx:'수행평가로도 활용 가능하도록 루브릭 추가하면 좋을 것 같아요.',tm:'5일 전',lk:6}]},
+{t:'1단원 인권 마인드맵 수업 PPT',w:6,pb:'bisang',tp:0,ty:'PPT',ds:'인권 의미, 발전 과정, 헌법 관계를 마인드맵으로 정리하는 참여형 PPT.',dl:112,lk:45,dt:'2026-03-22',fl:'인권_PPT.pptx (5.1MB)',cm:[{w:7,tx:'마인드맵 구조가 깔끔해서 아이들이 잘 따라왔어요.',tm:'3일 전',lk:7},{w:10,tx:'도입 영상 링크도 같이 공유해주시면 감사하겠습니다!',tm:'1일 전',lk:3}]},
+{t:'인권 침해 사례 분석 모둠 활동지',w:7,pb:'kumsung',tp:0,ty:'학습지/활동지',ds:'뉴스 기사 4건 활용 인권 침해 사례 분석. 모둠별 다른 기사 분석 후 발표.',dl:78,lk:29,dt:'2026-03-19',fl:'인권사례_활동지.hwp (48KB)',cm:[{w:0,tx:'기사 선정이 좋아요. 학생들이 공감하는 사례들이네요.',tm:'4일 전',lk:8},{w:11,tx:'발표 평가 기준도 함께 올려주시면 좋겠어요!',tm:'2일 전',lk:4}]},
+{t:'헌법 기관 역할극 시나리오 & 루브릭',w:0,pb:'bisang',tp:1,ty:'수행평가 루브릭',ds:'국회/정부/법원 역할극 수행평가. 시나리오 3종+루브릭.',dl:86,lk:34,dt:'2026-03-12',fl:'역할극.hwp (55KB)',cm:[{w:4,tx:'시나리오가 현실적이라 아이들이 몰입해요.',tm:'6일 전',lk:10},{w:8,tx:'법원 역할이 인기 많았어요. 판사복 소품 준비하면 더 좋아요!',tm:'3일 전',lk:12}]},
+{t:'시장 가격 결정 시뮬레이션 활동지',w:2,pb:'bisang',tp:3,ty:'학습지/활동지',ds:'수요-공급 곡선 체험 시뮬레이션. 학생들이 가격을 정하고 균형 가격 찾기.',dl:104,lk:52,dt:'2026-03-08',fl:'가격결정.hwp (42KB)',cm:[{w:1,tx:'시뮬레이션이 교과서 내용을 직관적으로 이해시켜줘요.',tm:'1주 전',lk:9},{w:3,tx:'엑셀 템플릿도 같이 만들면 데이터 정리가 편해요.',tm:'5일 전',lk:5},{w:9,tx:'저희 반은 물건 카드를 직접 만들게 했더니 더 재밌어했어요.',tm:'2일 전',lk:7}]},
+{t:'환율 변동과 우리 생활 시사 PPT',w:2,pb:'chunjae',tp:4,ty:'PPT',ds:'원/달러 환율 활용 시사 연계 수업 PPT. 해외직구, 여행경비 실생활 사례.',dl:71,lk:28,dt:'2026-03-05',fl:'환율_PPT.pptx (6.3MB)',cm:[{w:5,tx:'시사 자료가 최신이라 바로 쓸 수 있어서 좋아요.',tm:'1주 전',lk:6}]},
+{t:'국제기구 카드 분류 활동지',w:4,pb:'bisang',tp:5,ty:'학습지/활동지',ds:'UN, WHO, WTO 등 주요 국제기구 카드 분류. 6단원 도입용.',dl:58,lk:21,dt:'2026-03-01',fl:'국제기구_카드.hwp (72KB)',cm:[{w:10,tx:'카드 디자인이 예뻐서 아이들이 좋아해요.',tm:'5일 전',lk:5}]},
+{t:'학기 초 오리엔테이션 PPT',w:4,pb:'bisang',tp:-1,sp:'학기 초 오리엔테이션',ty:'PPT',ds:'새 학기 첫 수업용. 자기소개, 수업 안내, 평가 계획, 규칙, 아이스브레이킹 퀴즈 5문항.',dl:187,lk:76,dt:'2026-02-28',fl:'오리엔테이션.pptx (4.2MB)',cm:[{w:2,tx:'매년 고민인데 올해는 수월했어요!',tm:'1주 전',lk:20},{w:7,tx:'아이스브레이킹 퀴즈 변형해서 썼는데 분위기 👍',tm:'5일 전',lk:14},{w:11,tx:'학부모 참관 수업에서도 활용했습니다!',tm:'2일 전',lk:8}]},
+{t:'기말고사 후 미니 다큐 프로젝트',w:4,pb:'bisang',tp:-1,sp:'기말 후 활동',ty:'학습지/활동지',ds:'기말 후 2주 미니 다큐 프로젝트. 4인 1조, 주제선정→취재→편집→발표.',dl:134,lk:62,dt:'2026-02-20',fl:'미니다큐_가이드.hwp (58KB)',cm:[{w:9,tx:'아이들 결과물이 상상 이상으로 좋았어요!',tm:'3일 전',lk:16},{w:0,tx:'편집 도구로 캔바 추천합니다. 무료에 직관적이에요.',tm:'1일 전',lk:10}]},
+{t:'자유학기 — 우리 동네 경제 지도 만들기',w:1,pb:'bisang',tp:-1,sp:'자유학기제',ty:'학습지/활동지',ds:'동네 상권 조사+지도 표시, 시장경제 원리 체험 프로젝트.',dl:92,lk:44,dt:'2026-02-15',fl:'경제지도.hwp (80KB)',cm:[{w:6,tx:'현장 체험학습과 연계하면 더 좋아요.',tm:'1주 전',lk:8},{w:3,tx:'구글맵 활용 방법도 같이 알려주면 디지털 역량까지!',tm:'4일 전',lk:11}]},
+{t:'민주주의 발전 과정 타임라인 PPT',w:8,pb:'bisang',tp:0,ty:'PPT',ds:'시민혁명부터 현대 민주주의까지 타임라인 형태로 구성. 학생들이 직접 빈칸을 채워가는 참여형.',dl:76,lk:33,dt:'2026-03-26',fl:'민주주의_타임라인.pptx (4.8MB)',cm:[{w:0,tx:'타임라인 구조가 시각적으로 훌륭합니다.',tm:'2일 전',lk:7},{w:2,tx:'빈칸 채우기 활동이 복습에도 효과적이에요.',tm:'1일 전',lk:5}]},
+{t:'삼권분립 비교 분석표 활동지',w:10,pb:'mirae',tp:1,ty:'학습지/활동지',ds:'입법·행정·사법부의 역할을 비교표로 정리하는 활동지. 미래엔 2단원 기준.',dl:67,lk:28,dt:'2026-03-24',fl:'삼권분립_비교표.hwp (35KB)',cm:[{w:5,tx:'비교표 형식이 깔끔해서 필기 부담이 적어요.',tm:'3일 전',lk:6}]},
+{t:'소비자 권리 침해 사례 카드 활동',w:11,pb:'bisang',tp:3,ty:'학습지/활동지',ds:'실제 소비자 분쟁 사례를 카드로 만들어 해결 방법을 토론하는 활동. 4단원 연계.',dl:54,lk:24,dt:'2026-03-21',fl:'소비자권리_카드.hwp (60KB)',cm:[{w:8,tx:'사례가 현실적이라 아이들이 진지하게 토론해요.',tm:'4일 전',lk:8},{w:4,tx:'소비자원 실제 해결 사례를 추가하면 더 실감나요.',tm:'2일 전',lk:5}]},
+{t:'무역 시뮬레이션 게임 활동지',w:9,pb:'chunjae',tp:4,ty:'교구 활용법',ds:'나라별 자원 카드를 활용한 무역 시뮬레이션. 비교우위 개념 체험. 천재 5단원.',dl:63,lk:31,dt:'2026-03-17',fl:'무역_시뮬레이션.pdf (2.1MB)',cm:[{w:2,tx:'비교우위를 이렇게 쉽게 설명할 수 있다니!',tm:'5일 전',lk:12},{w:7,tx:'카드 인쇄 템플릿도 같이 주시면 좋겠어요.',tm:'2일 전',lk:6}]},
+{t:'국제 분쟁 사례 분석 모둠 발표 루브릭',w:10,pb:'bisang',tp:5,ty:'수행평가 루브릭',ds:'최근 국제 분쟁 4건을 모둠별로 분석하고 발표하는 수행평가 루브릭.',dl:48,lk:19,dt:'2026-03-14',fl:'국제분쟁_루브릭.hwp (45KB)',cm:[{w:1,tx:'분쟁 사례 선정이 시의적절합니다.',tm:'6일 전',lk:5}]},
+{t:'학급 레크레이션 — 사회 상식 퀴즈 대회 운영 가이드',w:7,pb:'bisang',tp:-1,sp:'학급 레크레이션',ty:'학습지/활동지',ds:'학기 중간이나 말에 활용 가능한 사회 상식 퀴즈 대회 운영 가이드. 팀 대항전 형식.',dl:83,lk:37,dt:'2026-02-25',fl:'퀴즈대회_가이드.hwp (55KB)',cm:[{w:4,tx:'아이들이 경쟁심이 생기니까 몰입도가 높아요!',tm:'3일 전',lk:13},{w:11,tx:'퀴즈 문제를 학생들이 직접 출제하게 해도 재밌어요.',tm:'1일 전',lk:9}]},
+{t:'진로 탐색 — 사회과학 관련 직업 카드',w:6,pb:'bisang',tp:-1,sp:'진로 탐색',ty:'학습지/활동지',ds:'사회과학 관련 직업 20종 카드. 직업 특성, 필요 역량, 관련 학과를 정리.',dl:71,lk:30,dt:'2026-02-18',fl:'진로카드.hwp (90KB)',cm:[{w:9,tx:'진로 상담 시간에도 활용하고 있어요. 다목적!',tm:'5일 전',lk:7}]},
+{t:'1단원 인권 영상 자료 큐레이션 (YouTube 10선)',w:8,pb:'bisang',tp:0,ty:'영상자료',ds:'인권 관련 YouTube 영상 10편 큐레이션. 영상별 활용 가능 차시, 토론 주제, QR코드 포함.',dl:94,lk:42,dt:'2026-03-23',fl:'인권영상_큐레이션.pdf (1.2MB)',cm:[{w:0,tx:'영상 선별 기준이 좋아요. 수업에 바로 쓸 수 있어요.',tm:'3일 전',lk:10},{w:5,tx:'QR코드 첨부가 편리합니다. 학생들 스마트폰으로 바로!',tm:'1일 전',lk:8}]},
+{t:'4단원 시장경제 개념정리 학습지 (빈칸형)',w:11,pb:'bisang',tp:3,ty:'학습지/활동지',ds:'시장경제 핵심 개념을 빈칸으로 정리하는 학습지. 수업 마무리나 복습용.',dl:88,lk:35,dt:'2026-03-09',fl:'시장경제_빈칸.hwp (30KB)',cm:[{w:3,tx:'복습용으로 딱이에요. 시험 전에 나눠주면 효과 좋습니다.',tm:'1주 전',lk:11},{w:7,tx:'정답지도 같이 올려주시면 감사하겠습니다!',tm:'4일 전',lk:4}]}
+].forEach((r,i)=>{r.id=i;R.push(r)});
+
+const P=[
+{id:0,nm:'시장경제 탐험 보드게임',mk:'한국교육콘텐츠연구소',pr:'33,000원',ic:'🎲',tp:[2,3],sp:[],sc:{교육과정:5,몰입도:4.5,수행평가:4.5,준비용이:4,가성비:4},tot:22,
+ev:[{w:2,sch:'서울 ○○중 · 교직 8년 · 일반사회 전공',pb:'bisang',dt:'2026.03.15',sc:{교육과정:5,몰입도:5,수행평가:4.5,준비용이:4,가성비:4},
+spec:{grade:'중2~3 추천',size:'4~5명/모둠 최적',prep:'10분 (규칙 설명 PPT 활용 시)',diff:'중',time:'50분 (1차시) 또는 100분 (2차시 연계)'},
+pros:['교환 과정에서 기회비용 개념이 자연스럽게 체화됨 — "이걸 사면 저걸 못 사네요"라고 스스로 말하기 시작','수행평가 연계가 쉬움 — 게임 후 "경제적 선택 보고서" 활동지 연결 가능','정부 규제 카드를 추가하면 시장 실패까지 커버 가능'],
+cons:['규칙 설명에 10분+ 소요. 50분 수업에서 빠듯','35명 이상 학급에서는 2세트 필요 (모둠당 7명 초과 시 참여도↓)'],
+timeline:[{t:'도입 10분',d:'규칙 설명 PPT로 게임 규칙 안내'},{t:'본게임 30분',d:'자유 거래 라운드 3회 진행'},{t:'정리 10분',d:'"나의 경제적 선택" 워크시트 작성'}],
+recommend:'3~4단원 경제 파트를 체험형으로 가르치고 싶은 선생님, 수행평가를 게임과 연계하고 싶은 선생님에게 강력 추천합니다.'},
+{w:0,sch:'경기 ○○중 · 교직 5년 · 일반사회 전공',pb:'kumsung',dt:'2026.03.20',sc:{교육과정:5,몰입도:4.5,수행평가:5,준비용이:4,가성비:4},
+spec:{grade:'중2 추천',size:'4명/모둠 최적',prep:'15분 (첫 시행 시)',diff:'중',time:'100분 (2차시 권장)'},
+pros:['모둠별 거래 기록이 자동으로 생기부 소재가 됨','금성 교과서 4~5단원과 완벽 매칭','반복 시행 시 학생들이 전략적 사고를 하기 시작'],
+cons:['교구 부품이 작아서 분실 주의','개인별 참여도 차이를 평가하기 어려울 수 있음'],
+timeline:[{t:'1차시 — 기본',d:'자유 시장 거래, 수요-공급 원리 체험'},{t:'2차시 — 심화',d:'정부 규제 카드 추가, 시장 실패 토론'}],
+recommend:'생기부 세특 연계를 중시하는 선생님, 2차시 이상 확보 가능한 환경에서 깊이 있는 경제 수업을 원하는 선생님에게 추천합니다.'}],
+cm:[{w:3,tx:'두 번째 반부터는 아이들이 서로 규칙 알려줘요. 연속 수업 추천!',tm:'2일 전',lk:12,tp:'agree'},{w:4,tx:'35명 넘으면 참여도가 확실히 떨어져요. 4~5명 최적입니다.',tm:'1일 전',lk:8,tp:'diff'},{w:5,tx:'생기부 문구 예시 덕분에 세특 작성이 수월했어요 😊',tm:'12시간 전',lk:15,tp:'agree'},{w:7,tx:'중1에게는 난이도가 좀 높았어요. 중2 이상 추천.',tm:'6시간 전',lk:5,tp:'diff'},{w:8,tx:'경제 단원 전체를 이 교구 하나로 커버했습니다. 최고!',tm:'3시간 전',lk:9,tp:'agree'}]},
+{id:1,nm:'인권 토론 카드게임',mk:'문화놀이터 뜻',pr:'28,000원',ic:'🃏',tp:[0],sp:[],sc:{교육과정:4.5,몰입도:5,수행평가:4,준비용이:4.5,가성비:4},tot:21,
+ev:[{w:2,sch:'서울 ○○중 · 교직 8년',pb:'bisang',dt:'2026.03.10',sc:{교육과정:4.5,몰입도:5,수행평가:4,준비용이:4.5,가성비:4},
+spec:{grade:'중1~3 전학년',size:'4~6명/모둠',prep:'5분 미만',diff:'하',time:'30~40분'},
+pros:['별도 준비 없이 카드만 나눠주면 바로 시작 가능','중학생이 공감할 수 있는 실제 사례로 구성','토론 입문용으로 최적 — 말하기 어려워하는 학생도 카드를 읽으면 됨'],
+cons:['카드 20장이라 같은 반에서 2회차부터 중복','일부 사례가 초등 수준이라 중3에게는 쉬울 수 있음'],
+timeline:[{t:'카드 배분 5분',d:'모둠별 카드 4장씩 배분'},{t:'토론 25분',d:'카드별 상황 읽고 찬반 토론'},{t:'정리 10분',d:'우리 모둠의 인권 선언문 작성'}],
+recommend:'인권 감수성 수업, 토론 입문 수업에 적합. 준비 시간이 부족한 선생님에게 특히 추천.'}],
+cm:[{w:6,tx:'인권 감수성 수업에 딱! 서로 다른 입장을 이해하게 돼요.',tm:'3일 전',lk:9,tp:'agree'},{w:10,tx:'직접 카드를 추가로 만들어서 30장으로 늘렸어요.',tm:'1일 전',lk:7,tp:'agree'},{w:9,tx:'중3에게는 좀 쉬운 편이에요. 중1~2에 최적.',tm:'12시간 전',lk:4,tp:'diff'}]},
+{id:2,nm:'아이스브레이킹 퀴즈 카드',mk:'학교네',pr:'15,000원',ic:'🎯',tp:[],sp:['학기 초 오리엔테이션','기말 후 활동'],sc:{교육과정:3,몰입도:5,수행평가:2.5,준비용이:5,가성비:4.5},tot:20,
+ev:[{w:4,sch:'인천 ○○중 · 교직 6년',pb:'bisang',dt:'2026.02.25',sc:{교육과정:3,몰입도:5,수행평가:2.5,준비용이:5,가성비:4.5},
+spec:{grade:'전학년',size:'제한 없음',prep:'0분',diff:'하',time:'15~30분'},
+pros:['준비 시간 제로 — 카드 뽑고 바로 시작','모든 학년, 모든 인원에서 활용 가능','분위기 환기 효과 탁월'],
+cons:['교육과정 직접 연계는 약함','반복 사용 시 신선함 감소'],
+timeline:[{t:'시작 2분',d:'카드 더미에서 한 장씩 뽑기'},{t:'진행 15분',d:'퀴즈 풀이 + 팀 대항전'},{t:'마무리 3분',d:'최다 정답 팀 시상'}],
+recommend:'학기 초/말, 기말고사 후 빈 시간 활용에 최적. 사회 관련 퀴즈를 섞으면 교과 연계도 ↑'}],
+cm:[{w:1,tx:'기말 후 이 카드 + 보드게임 조합이 최고예요.',tm:'5일 전',lk:18,tp:'agree'},{w:11,tx:'사회 퀴즈 카드를 직접 만들어서 섞으면 완벽!',tm:'2일 전',lk:12,tp:'agree'}]},
+{id:3,nm:'세계시민 역할극 시뮬레이션',mk:'학교네',pr:'35,000원',ic:'🌏',tp:[5],sp:[],sc:{교육과정:4,몰입도:4.5,수행평가:3.5,준비용이:3.5,가성비:3.5},tot:19,
+ev:[{w:7,sch:'부산 ○○중 · 교직 3년',pb:'mirae',dt:'2026.03.08',sc:{교육과정:4,몰입도:4.5,수행평가:3.5,준비용이:3.5,가성비:3.5},
+spec:{grade:'중2~3',size:'5~6명/모둠',prep:'20분',diff:'상',time:'100분 (2차시)'},
+pros:['국제 관계의 복잡성을 체감','다양한 입장에서 사고하는 훈련','발표+토론 수행평가 연계 가능'],
+cons:['준비 시간이 상당함 (역할 카드 읽기 + 배경 설명)','2차시 이상 확보 필수 — 1차시로는 부족'],
+timeline:[{t:'1차시 전반',d:'나라별 역할 카드 배분 + 배경 학습'},{t:'1차시 후반',d:'모둠 내 전략 회의'},{t:'2차시',d:'전체 회의 시뮬레이션 + 결의안 채택'}],
+recommend:'6단원 국제사회를 깊이 있게 다루고 싶고, 2차시 블록 수업이 가능한 선생님에게 추천.'}],
+cm:[{w:2,tx:'준비는 힘들지만 아이들 반응은 역대급이에요.',tm:'4일 전',lk:10,tp:'agree'},{w:5,tx:'1차시만으로는 정말 부족해요. 2차시 필수입니다.',tm:'2일 전',lk:6,tp:'diff'}]},
+{id:4,nm:'경제 개념 플래시 카드 세트',mk:'에듀플레이',pr:'22,000원',ic:'🗂️',tp:[2,3,4],sp:[],sc:{교육과정:4.5,몰입도:3.5,수행평가:3,준비용이:5,가성비:4.5},tot:20.5,
+ev:[{w:9,sch:'대전 ○○중 · 교직 4년',pb:'bisang',dt:'2026.03.22',sc:{교육과정:4.5,몰입도:3.5,수행평가:3,준비용이:5,가성비:4.5},
+spec:{grade:'중1~3',size:'개인/짝',prep:'0분',diff:'하',time:'10~20분'},
+pros:['경제 용어 복습에 최적','시험 직전 10분 활용으로 효과적','개인/짝 활동 모두 가능'],
+cons:['단순 암기 위주라 깊은 이해에는 한계','게임성이 낮아 흥미 유발은 제한적'],
+timeline:[{t:'배분 2분',d:'카드 세트 배분'},{t:'학습 10분',d:'개인 또는 짝과 퀴즈'},{t:'확인 5분',d:'핵심 개념 전체 확인'}],
+recommend:'시험 전 복습, 수업 마무리 5~10분 활용에 적합. 보드게임이나 토론과 병행하면 시너지 ↑'}],
+cm:[{w:0,tx:'시험 일주일 전부터 매시간 10분씩 활용했어요.',tm:'3일 전',lk:8,tp:'agree'},{w:3,tx:'좀 더 게임성 있는 버전이 나오면 좋겠어요.',tm:'1일 전',lk:4,tp:'diff'}]}
+];
+
+const PO=[
+{id:0,cat:'qna',w:1,t:'중2 시장경제 모둠 토론 수행평가 어떻게 설계하시나요?',bd:'올해 처음 2학년을 담당하게 됐는데, 시장경제 단원 수행평가를 모둠 토론으로 하려고 합니다. 루브릭 구성과 무임승차 방지 방법이 고민입니다. 특히 객관적인 참여도 평가 기준이 있으면 공유해주세요!',dt:'2026-04-03',lk:34,vw:156,cm:[{w:0,tx:'개인 기여도 체크리스트로 상호평가! 효과 있어요.',tm:'2시간 전',lk:8},{w:2,tx:'"발언 횟수"보다 "근거 제시 횟수"를 넣는 게 좋아요.',tm:'1시간 전',lk:12},{w:8,tx:'녹음 파일로 증거를 남기면 이의제기가 줄어들어요.',tm:'30분 전',lk:5}]},
+{id:1,cat:'discuss',w:2,t:'[시사] 환율 변동을 5단원 수업에 활용하는 방법',bd:'원/달러 환율 변동이 커서 "해외직구 가격이 왜 올랐어요?"라는 질문이 자연스럽게 나왔습니다. 구체적인 활동지 공유합니다.',dt:'2026-04-03',lk:52,vw:203,cm:[{w:3,tx:'실시간 환율 사이트를 프로젝터로 띄워놓으면 신기해해요.',tm:'3시간 전',lk:6},{w:10,tx:'달러 계산기 앱을 활용한 활동도 추천합니다.',tm:'1시간 전',lk:4}]},
+{id:2,cat:'news',w:3,t:'2022 개정 중2 적용 — 달라지는 점 정리',bd:'내년부터 중2도 2022 개정 적용. 경제 영역에 "금융" 내용이 새로 추가됐습니다.',dt:'2026-04-02',lk:87,vw:412,cm:[{w:0,tx:'금융 파트 추가는 처음 알았어요. 연수 필요!',tm:'어제',lk:14},{w:5,tx:'변경 성취기준 비교표 올려주실 수 있나요?',tm:'12시간 전',lk:8},{w:9,tx:'금융 교육 관련 외부 강사 섭외도 고려해보세요.',tm:'6시간 전',lk:5}]},
+{id:3,cat:'free',w:4,t:'오늘 수업에서 아이들이 해준 말이 뭉클했어요 🥹',bd:'"선생님도 쉬는 시간에 쉬어야 인권이에요"라는 말에 울컥했습니다. 이래서 교사를 하는구나 싶었어요.',dt:'2026-04-02',lk:124,vw:567,cm:[{w:6,tx:'이런 순간이 있어서 버틸 수 있는 거 같아요 🥹',tm:'어제',lk:22},{w:7,tx:'아이들이 생각보다 많이 보고 있더라고요.',tm:'10시간 전',lk:15},{w:11,tx:'저도 비슷한 경험! 감사 편지 받았을 때 울었어요.',tm:'5시간 전',lk:10}]},
+{id:4,cat:'qna',w:6,t:'자유학기제 주제선택 — 어떤 프로그램 운영하시나요?',bd:'올해 주제선택을 맡았는데 작년 "모의 재판" 외에 새 아이디어가 필요합니다.',dt:'2026-04-01',lk:41,vw:230,cm:[{w:1,tx:'"우리 동네 경제 지도 만들기" 추천! 아카이브에 올려놨어요.',tm:'2일 전',lk:11},{w:9,tx:'모의 UN 총회도 아이들 반응 좋았어요.',tm:'1일 전',lk:8}]},
+{id:5,cat:'discuss',w:8,t:'[시사] AI와 일자리 변화 — 사회 수업에서 어떻게 다루시나요?',bd:'최근 AI 관련 뉴스가 쏟아지는데, 아이들이 "선생님 저희도 AI에 대체되나요?"라고 물어봅니다. 5~6단원 연계 수업 아이디어를 나누고 싶어요.',dt:'2026-03-31',lk:63,vw:284,cm:[{w:2,tx:'AI 직업 카드를 만들어서 미래 직업 탐색 활동을 했어요.',tm:'3일 전',lk:9},{w:4,tx:'ChatGPT를 직접 보여주면서 장단점 토론하니 몰입도 높았습니다.',tm:'1일 전',lk:14}]},
+{id:6,cat:'free',w:10,t:'수행평가 채점하다 웃긴 답변 모음 😂',bd:'경제 단원 서술형에서 "기회비용이란 피자를 먹으면 치킨을 못 먹는 슬픔"이라고 쓴 학생이 있었어요. 틀린 건 아닌데... 😂',dt:'2026-03-30',lk:156,vw:723,cm:[{w:0,tx:'ㅋㅋㅋ 우리 반은 "기회비용 = 엄마의 잔소리"라고 썼어요',tm:'2일 전',lk:25},{w:7,tx:'이런 답변이 오히려 개념을 이해한 증거 아닐까요? 😆',tm:'1일 전',lk:18},{w:1,tx:'이럴 때 부분 점수를 줘야 하나 고민됩니다 ㅋㅋ',tm:'12시간 전',lk:11}]}
+];
+const CN={qna:'수업 Q&A',discuss:'시사 이슈',news:'교육정책',free:'자유'};const CC={qna:'cat-qna',discuss:'cat-discuss',news:'cat-news',free:'cat-free'};
+
+// ══════ STATE ══════
+let S={pg:'home',pub:0,unit:-1,rtype:'전체',rsort:'date',liked:new Set(),saved:new Set(),savedPo:new Set(),detR:null,detP:null,detPo:null,myTab:0,comCat:'all',avColor:0,actLog:[],cmtLiked:new Set(),reactions:{}};
+
+// ══════ ENGINE ══════
+function startApp(){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';render()}
+function go(pg,d){S.pg=pg;if(d)Object.assign(S,d);render();window.scrollTo(0,0)}
+function render(){renderNav();const c=document.getElementById('pages');const fn={home:rHome,feed:rFeed,archive:rArchive,'res-detail':rResD,review:rReview,'prod-detail':rProdD,community:rCom,'post-detail':rPoD,mypage:rMy};c.innerHTML=(fn[S.pg]||rHome)();updAv()}
+function renderNav(){const tabs=[['home','홈'],['feed','피드'],['archive','수업자료'],['review','교보재'],['community','커뮤니티'],['mypage','마이']];const map={'res-detail':'archive','prod-detail':'review','post-detail':'community'};const cur=map[S.pg]||S.pg;document.getElementById('navC').innerHTML=tabs.map(([id,nm])=>`<a href="#" class="${cur===id?'on':''}" onclick="event.preventDefault();go('${id}')">${nm}</a>`).join('')}
+function updAv(){document.getElementById('navAv').style.background=AVC[S.avColor];document.querySelectorAll('.my-av').forEach(e=>e.style.background=AVC[S.avColor])}
+function av(i,sz=30){return `<div style="width:${sz}px;height:${sz}px;border-radius:50%;background:${TCL[i][0]};color:${TCL[i][1]};display:flex;align-items:center;justify-content:center;font-size:${sz*.35}px;font-weight:600;flex-shrink:0">${T[i][0]}</div>`}
+function tlv(i){const l=LV[TLV[i]];return `<span class="lv ${l.c}">${l.n}</span>`}
+function logAct(ic,tx){S.actLog.unshift({icon:ic,text:tx,time:'방금 전'})}
+function toggleNotif(e){e.stopPropagation();const dd=document.getElementById('notifDD');dd.classList.toggle('show');dd.innerHTML=`<h4>알림 (${S.actLog.length})</h4>`+(S.actLog.length?S.actLog.slice(0,8).map(a=>`<div class="ni"><span style="font-size:14px">${a.icon}</span><div>${a.text}<div class="nt">${a.time}</div></div></div>`).join(''):'<div class="empty">알림이 없습니다</div>');document.getElementById('bellDot').style.display=S.actLog.length?'block':'none'}
+document.addEventListener('click',e=>{if(!e.target.closest('.nav-bell'))document.getElementById('notifDD').classList.remove('show')})
+function toggleSearch(){const ov=document.getElementById('searchOv');ov.classList.toggle('show');if(ov.classList.contains('show'))setTimeout(()=>document.getElementById('searchInp').focus(),100)}
+function doSearch(q){const res=document.getElementById('searchRes');if(!q.trim()){res.innerHTML='';return}const ql=q.toLowerCase();const m=[...R.filter(r=>(r.t+r.ds).toLowerCase().includes(ql)).slice(0,5).map(r=>({tp:'res-detail',k:'detR',id:r.id,ic:TI[r.ty]||'📄',t:r.t,m:T[r.w]+' · '+r.ty})),...P.filter(p=>p.nm.toLowerCase().includes(ql)).slice(0,3).map(p=>({tp:'prod-detail',k:'detP',id:p.id,ic:p.ic,t:p.nm,m:p.mk})),...PO.filter(p=>p.t.toLowerCase().includes(ql)).slice(0,3).map(p=>({tp:'post-detail',k:'detPo',id:p.id,ic:'💬',t:p.t,m:CN[p.cat]}))];res.innerHTML=m.length?m.map(x=>`<div class="sr-item" onclick="document.getElementById('searchOv').classList.remove('show');go('${x.tp}',{${x.k}:${x.id}})"><div class="sr-ic" style="background:var(--bgw)">${x.ic}</div><div><div class="sr-t">${x.t}</div><div class="sr-m">${x.m}</div></div></div>`).join(''):'<div class="empty">검색 결과 없음</div>'}
+function closeM(id){document.getElementById(id).classList.remove('show')}
+function openShare(){document.getElementById('mU').innerHTML=PUB[S.pub].u.map((u,i)=>`<div class="cb-i" onclick="this.classList.toggle('ck')">${i+1}. ${u}</div>`).join('')+SCAT.map(s=>`<div class="cb-i" onclick="this.classList.toggle('ck')" style="border-color:var(--al)">📌 ${s}</div>`).join('');document.getElementById('shareModal').classList.add('show')}
+function openAvM(){document.getElementById('avC').innerHTML=AVC.map((c,i)=>`<div class="av-c ${i===S.avColor?'sel':''}" style="background:${c}" onclick="S.avColor=${i};updAv();document.querySelectorAll('.av-c').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')"></div>`).join('');document.getElementById('avModal').classList.add('show')}
+function tgLike(id){if(S.liked.has(id))S.liked.delete(id);else{S.liked.add(id);logAct('❤️',`<b>${R[id].t.slice(0,22)}…</b>에 좋아요`)}render()}
+function tgSave(id){if(S.saved.has(id))S.saved.delete(id);else{S.saved.add(id);logAct('🔖',`<b>${R[id].t.slice(0,22)}…</b>을 저장`)}render()}
+function react(id,type){const key=id+'-'+type;if(S.reactions[key])delete S.reactions[key];else{S.reactions[key]=true;logAct(type==='r1'?'👍':type==='r2'?'✨':'🙏',`<b>${R[id].t.slice(0,22)}…</b>에 반응`)}render()}
+function tgPoLike(id){if(S.savedPo.has(id))S.savedPo.delete(id);else{S.savedPo.add(id);logAct('❤️',`게시글에 좋아요`)}render()}
+function addCmt(tp,id){const inp=document.getElementById('cmtInp');if(!inp||!inp.value.trim())return;const c={w:3,tx:inp.value.trim(),tm:'방금 전',lk:0};if(tp==='res'){R[id].cm.push(c);logAct('💬',`자료에 댓글`)}else if(tp==='prod'){c.tp='agree';P[id].cm.push(c);logAct('💬',`교보재에 댓글`)}else{PO[id].cm.push(c);logAct('💬',`게시글에 댓글`)}render()}
+function tgCL(key){if(S.cmtLiked.has(key))S.cmtLiked.delete(key);else S.cmtLiked.add(key);render()}
+
+// ══════ RENDER FUNCTIONS ══════
+function rHome(){const pub=PUB[S.pub];const recent=R.slice().sort((a,b)=>b.dt>a.dt?1:-1).slice(0,4);
+return `<div class="pg on">
+<div class="hero"><h2>안녕하세요, 김서연 선생님 🌿</h2><p>${pub.nm} 사회② 기준 새 자료를 확인하세요.</p><div class="hero-st"><div class="hero-s"><b>8,073</b><span>인증 교사</span></div><div class="hero-s"><b>${R.length}</b><span>공유 자료</span></div><div class="hero-s"><b>${P.length}</b><span>평가 교보재</span></div></div></div>
+<div class="g2"><div><div class="cd" style="margin-bottom:12px"><div style="font-size:14px;font-weight:600;margin-bottom:10px">📘 내 교과서 단원별 자료</div>
+<div style="display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap">${PUB.map((p,i)=>`<button class="bt bt-s ${i===S.pub?'on':''}" onclick="S.pub=${i};render()">${p.nm}</button>`).join('')}</div>
+${pub.u.map((u,i)=>{const cnt=R.filter(r=>r.tp===i).length;return `<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 11px;border-radius:8px;background:var(--bgw);margin-bottom:4px;cursor:pointer;transition:.15s" onclick="go('archive',{unit:${i}})" onmouseover="this.style.transform='translateX(3px)'" onmouseout="this.style.transform=''"><span style="font-size:12px;font-weight:500">${i+1}. ${u}</span><span style="font-size:10px;background:var(--pl);color:#fff;padding:1px 7px;border-radius:9px;font-weight:600">${cnt}건</span></div>`}).join('')}
+<div class="sp-cat"><h4>📌 단원 무관</h4>${SCAT.map((s,i)=>`<div class="si" onclick="go('archive',{unit:${100+i}})">${s}</div>`).join('')}</div></div></div>
+<div><div class="cd" style="margin-bottom:10px"><div style="font-size:13px;font-weight:600;margin-bottom:8px">🆕 최근 활동</div>
+${recent.map(r=>`<div style="display:flex;gap:8px;padding:7px;border-radius:8px;background:var(--bg);margin-bottom:5px;cursor:pointer;font-size:12px" onclick="go('res-detail',{detR:${r.id}})">${av(r.w,26)}<div style="flex:1"><b>${T[r.w]}</b> ${tlv(r.w)}<div style="font-size:10.5px;color:var(--tl)">${r.t.slice(0,20)}… · ${r.dt}</div></div></div>`).join('')}</div>
+<div class="cd"><div style="font-size:13px;font-weight:600;margin-bottom:6px">📌 공지</div><div style="font-size:12px;color:var(--ts);line-height:1.8">• 에듀큐레이터 2기 모집 (~4/15)<br>• 2022 개정 단원 매핑 완료<br>• 경제 플래시 카드 신규 평가 등록</div></div></div></div></div>`}
+
+function rFeed(){const items=R.slice().sort((a,b)=>b.dt>a.dt?1:-1);
+return `<div class="pg on"><div class="pg-h"><h1>피드</h1><p>선생님들의 자료와 이야기</p></div><div class="g2"><div>${items.slice(0,12).map(r=>{const pub=PUB.find(p=>p.id===r.pb);const tn=r.tp>=0?TOP[r.tp]:(r.sp||'');const tc=TC[r.ty]||['var(--bgw)','var(--ts)'];const r1=S.reactions[r.id+'-r1'],r2=S.reactions[r.id+'-r2'],r3=S.reactions[r.id+'-r3'];
+return `<div class="fp" style="animation:fu .3s ease both"><div class="fp-hd">${av(r.w,34)}<div style="margin-left:1px"><div class="nm">${T[r.w]} ${tlv(r.w)}</div><div class="mt">${pub?pub.nm:''} · ${r.dt}</div></div></div>
+<div class="fp-bd" onclick="go('res-detail',{detR:${r.id}})"><div class="tt">${r.t}</div><div class="dx">${r.ds.slice(0,90)}…</div></div>
+<div class="fp-preview"><div class="pv-ic" style="background:${tc[0]};color:${tc[1]}">${TI[r.ty]||'📄'}</div><div class="pv-info"><b>${r.fl}</b><span>📥 ${r.dl}회 다운로드</span></div></div>
+<div class="fp-tg"><span class="tg tg-g">${tn}</span><span class="tg" style="background:${tc[0]};color:${tc[1]}">${r.ty}</span></div>
+<div class="reactions">
+<button class="r1 ${r1?'on':''}" onclick="react(${r.id},'r1')">👍 도움됐어요 ${r.lk+(r1?1:0)}</button>
+<button class="r2 ${r2?'on':''}" onclick="react(${r.id},'r2')">✨ 따라해볼게요</button>
+<button class="r3 ${r3?'on':''}" onclick="react(${r.id},'r3')">🙏 감사합니다</button>
+<button class="${S.saved.has(r.id)?'saved':''}" onclick="tgSave(${r.id})">${S.saved.has(r.id)?'🔖 저장됨':'🔖'}</button>
+</div></div>`}).join('')}</div>
+<div><div class="cd" style="margin-bottom:10px"><div style="font-size:13px;font-weight:600;margin-bottom:6px">🔥 이번 주 인기</div>${R.slice().sort((a,b)=>b.lk-a.lk).slice(0,5).map((r,i)=>`<div style="font-size:12px;margin-bottom:4px;cursor:pointer" onclick="go('res-detail',{detR:${r.id}})">${i+1}. <span style="color:var(--p)">${r.t.slice(0,24)}…</span> <span style="color:var(--tl)">(❤️${r.lk})</span></div>`).join('')}</div>
+<div class="cd"><div style="font-size:13px;font-weight:600;margin-bottom:6px">🏷 태그</div><div style="display:flex;flex-wrap:wrap;gap:4px"><span class="tg">#수행평가</span><span class="tg">#생기부</span><span class="tg">#시장경제</span><span class="tg">#모둠활동</span><span class="tg">#기말후</span><span class="tg">#인권</span><span class="tg">#역할극</span><span class="tg">#서술형</span></div></div></div></div></div>`}
+
+function rArchive(){const pub=PUB[S.pub];let f=R.slice();if(S.unit>=0&&S.unit<100)f=f.filter(r=>r.tp===S.unit);else if(S.unit>=100)f=f.filter(r=>r.sp===SCAT[S.unit-100]);if(S.rtype!=='전체')f=f.filter(r=>r.ty===S.rtype);if(S.rsort==='date')f.sort((a,b)=>b.dt>a.dt?1:-1);else if(S.rsort==='dl')f.sort((a,b)=>b.dl-a.dl);else f.sort((a,b)=>b.lk-a.lk);
+const ul=S.unit===-1?'전체':S.unit>=100?'📌 '+SCAT[S.unit-100]:`${S.unit+1}단원 ${pub.u[S.unit]}`;const mi=S.unit>=0&&S.unit<100?PUB.filter((_,i)=>i!==S.pub).map(p=>`${p.nm}`).join(', '):'';
+return `<div class="pg on"><div class="pg-h"><h1>수업자료 아카이브</h1><p>교과서·단원별 정리 — 다른 출판사 동일 주제 포함</p></div>
+<div class="g-ar"><div class="cd f-sb" style="padding:14px">
+<div class="f-grp"><h3>교과서</h3>${PUB.map((p,i)=>`<div class="f-i ${i===S.pub?'on':''}" onclick="S.pub=${i};S.unit=-1;render()">${p.nm}</div>`).join('')}</div>
+<div class="f-grp"><h3>단원</h3><div class="f-i ${S.unit===-1?'on':''}" onclick="S.unit=-1;render()">전체</div>${pub.u.map((u,i)=>`<div class="f-i ${S.unit===i?'on':''}" onclick="S.unit=${i};render()">${i+1}. ${u}</div>`).join('')}<div style="height:1px;background:var(--bl);margin:4px 0"></div>${SCAT.map((s,i)=>`<div class="f-i accent ${S.unit===100+i?'on':''}" onclick="S.unit=${100+i};render()">📌 ${s}</div>`).join('')}</div>
+<div class="f-grp"><h3>유형</h3><div class="f-i ${S.rtype==='전체'?'on':''}" onclick="S.rtype='전체';render()">전체</div>${TYPES.map(t=>`<div class="f-i ${S.rtype===t?'on':''}" onclick="S.rtype='${t}';render()">${t}</div>`).join('')}</div></div>
+<div><div style="background:var(--pbg);border-radius:12px;padding:9px 13px;font-size:12px;color:var(--pd);margin-bottom:10px">📎 <b>${ul}</b> — ${f.length}건${mi?' · '+mi+' 자료 포함':''}</div>
+<div style="display:flex;gap:4px;margin-bottom:10px">${[['date','최신순'],['dl','다운로드순'],['like','좋아요순']].map(([k,v])=>`<button class="bt bt-s ${S.rsort===k?'on':''}" onclick="S.rsort='${k}';render()">${v}</button>`).join('')}</div>
+${f.length===0?'<div class="empty">해당 조건의 자료가 없습니다.</div>':''}
+${f.map(r=>{const tc=TC[r.ty]||['var(--bgw)','var(--ts)'];const tn=r.tp>=0?TOP[r.tp]:(r.sp||'');const sp=PUB.find(p=>p.id===r.pb);const mp=r.pb!==PUB[S.pub].id&&r.tp>=0;
+return `<div class="rc" onclick="go('res-detail',{detR:${r.id}})"><div class="rc-ic" style="background:${tc[0]};color:${tc[1]}">${TI[r.ty]||'📄'}</div><div class="rc-bd"><h4>${r.t}</h4><div class="meta">${T[r.w]} ${tlv(r.w)} · ${sp?sp.nm:''} · ${r.dt}</div><div class="tags"><span class="tg tg-g">${tn}</span><span class="tg" style="background:${tc[0]};color:${tc[1]}">${r.ty}</span>${mp?`<span class="tg tg-map">🔗 ${sp.nm}→${PUB[S.pub].nm}</span>`:''}<span class="tg">💬${r.cm.length}</span></div></div><div class="rc-st"><span>📥 <b>${r.dl}</b></span><span>❤️ <b>${r.lk}</b></span></div></div>`}).join('')}</div></div></div>`}
+
+function rResD(){const r=R[S.detR];if(!r)return'';const pub=PUB.find(p=>p.id===r.pb);const tc=TC[r.ty]||['var(--bgw)','var(--ts)'];const tn=r.tp>=0?TOP[r.tp]:(r.sp||'');
+return `<div class="pg on"><div class="det-back" onclick="go('archive')">← 수업자료</div><div class="det-hd">
+<div style="display:flex;gap:4px;margin-bottom:8px;align-items:center"><span class="tg tg-g">${tn}</span><span class="tg" style="background:${tc[0]};color:${tc[1]}">${r.ty}</span></div>
+<h1>${r.t}</h1><div class="dmeta">${av(r.w,24)} <span style="margin-left:6px">${T[r.w]} 선생님 ${tlv(r.w)}</span> · ${pub?pub.nm:''} · ${r.dt} · 📥 ${r.dl} · ❤️ ${r.lk}</div>
+<div class="desc">${r.ds}</div>
+<div class="filebox"><div class="fic" style="background:${tc[0]};color:${tc[1]}">${TI[r.ty]||'📄'}</div><div style="flex:1"><div style="font-size:12.5px;font-weight:600">${r.fl}</div><div style="font-size:11px;color:var(--tl)">다운로드 ${r.dl}회</div></div><button class="bt bt-p bt-s" onclick="alert('프로토타입')">📥 다운로드</button></div>
+${r.prodLink!==undefined?`<div style="padding:10px 14px;background:var(--pbg);border-radius:8px;margin:8px 0;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:8px" onclick="go('prod-detail',{detP:${r.prodLink}})"><span style="font-size:20px">${P[r.prodLink].ic}</span><div><b>${P[r.prodLink].nm}</b> 상세 평가 보기 → <span style="color:var(--p)">${P[r.prodLink].tot}/25점</span></div></div>`:''}
+<div class="det-acts"><button class="bt ${S.liked.has(r.id)?'bt-p':'bt-o'}" onclick="tgLike(${r.id})">❤️ ${r.lk+(S.liked.has(r.id)?1:0)}</button><button class="bt ${S.saved.has(r.id)?'bt-p':'bt-o'}" onclick="tgSave(${r.id})">${S.saved.has(r.id)?'🔖 저장됨':'🔖 저장'}</button></div></div>
+<div class="cmt-sec"><h3>💬 댓글 (${r.cm.length})</h3>
+${r.cm.map((c,ci)=>{const key='r'+r.id+'c'+ci;return `<div class="cmt">${av(c.w)}<div class="cb"><span class="cn">${T[c.w]} ${tlv(c.w)}</span><span class="ct">${c.tm}</span><div class="cx">${c.tx}</div><div class="cr"><span class="${S.cmtLiked.has(key)?'liked-c':''}" onclick="tgCL('${key}')">👍 ${c.lk+(S.cmtLiked.has(key)?1:0)}</span><span>💬 답글</span></div></div></div>`}).join('')}
+${r.cm.length===0?'<div class="empty">첫 댓글을 남겨보세요!</div>':''}
+<div class="cmt-inp"><input placeholder="댓글을 남겨주세요..." id="cmtInp"><button onclick="addCmt('res',${r.id})">등록</button></div></div></div>`}
+
+function rReview(){return `<div class="pg on"><div class="pg-h"><h1>교보재 평가</h1><p>에듀큐레이터 검증 교보재 — 전문 리뷰 & 활용 가이드</p></div>
+<div class="rv-grid">${P.map(p=>{const stars='★'.repeat(Math.floor(p.tot/5))+'☆'.repeat(5-Math.floor(p.tot/5));return `<div class="rv-cd" onclick="go('prod-detail',{detP:${p.id}})"><div class="rv-img">${p.ic}<span class="bdg" style="position:absolute;top:8px;right:8px">✓ 검증</span></div><div class="rv-bd"><h3>${p.nm}</h3><div class="mk">${p.mk} · ${p.pr}</div><div style="display:flex;align-items:baseline;gap:6px;margin-bottom:8px"><span style="font-size:24px;font-weight:700;color:var(--pd)">${p.tot}</span><span style="font-size:12px;color:var(--tl)">/25</span><span style="color:var(--star);font-size:13px">${stars}</span></div><div style="display:flex;gap:4px;flex-wrap:wrap">${p.tp.map(i=>`<span class="tg tg-g">${i+1}단원</span>`).join('')}${p.sp.map(s=>`<span class="tg tg-o">${s}</span>`).join('')}<span class="tg">평가 ${p.ev.length}</span><span class="tg tg-o">💬 ${p.cm.length}</span></div></div></div>`}).join('')}</div></div>`}
+
+function rProdD(){const p=P[S.detP];if(!p)return'';const stars='★'.repeat(Math.floor(p.tot/5))+'☆'.repeat(5-Math.floor(p.tot/5));const sk=Object.keys(p.sc);
+return `<div class="pg on"><div class="det-back" onclick="go('review')">← 교보재 목록</div>
+<div class="cd" style="padding:0;overflow:hidden;margin-bottom:16px"><div class="rvd-top"><div class="rvd-img">${p.ic}</div><div class="rvd-info"><div style="margin-bottom:6px"><span class="bdg">✓ 에듀큐레이터 검증</span></div><h1>${p.nm}</h1><div class="mk">${p.mk} · ${p.pr}</div>
+<div class="sc-big"><span class="n">${p.tot}</span><span class="o">/25점</span><span class="s">${stars}</span></div>
+<div class="sc-bars">${sk.map(k=>`<div class="sc-bar"><span class="lb">${k}</span><div class="bar"><div class="fill" style="width:${p.sc[k]/5*100}%"></div></div><span class="vl">${p.sc[k]}</span></div>`).join('')}</div></div></div>
+<div style="padding:12px 22px;border-top:1px solid var(--bl);display:flex;align-items:center;gap:7px;flex-wrap:wrap"><span style="font-size:12px;font-weight:600;color:var(--ts)">활용 단원:</span>${p.tp.map(i=>`<span class="tg tg-g">${PUB[S.pub].u[i]}</span>`).join('')}${p.sp.map(s=>`<span class="tg tg-o">${s}</span>`).join('')}</div></div>
+<h3 style="font-size:15px;font-weight:600;margin-bottom:10px">📝 에듀큐레이터 상세 평가 (${p.ev.length}명)</h3>
+${p.ev.map(ev=>`<div class="pev">
+<div class="pev-hd">${av(ev.w,36)}<div><div class="nm">${T[ev.w]} <span class="bdg" style="font-size:9.5px">에듀큐레이터</span></div><div class="mt">${ev.sch} · ${PUB.find(x=>x.id===ev.pb)?.nm||''} · ${ev.dt}</div></div></div>
+${ev.spec?`<div class="pev-spec"><div class="sp-item"><div class="sp-v">${ev.spec.grade}</div><div class="sp-l">추천 학년</div></div><div class="sp-item"><div class="sp-v">${ev.spec.size}</div><div class="sp-l">최적 인원</div></div><div class="sp-item"><div class="sp-v">${ev.spec.prep}</div><div class="sp-l">준비 시간</div></div><div class="sp-item"><div class="sp-v">${ev.spec.diff}</div><div class="sp-l">난이도</div></div></div>`:''}
+<div class="pev-scores">${Object.entries(ev.sc).map(([k,v])=>`<span>${k} <b>${v}</b></span>`).join('')}</div>
+<div class="pev-body">
+${ev.pros?`<div class="pev-section"><h4>✅ 장점</h4><ul class="pev-list pros">${ev.pros.map(p=>`<li>${p}</li>`).join('')}</ul></div>`:''}
+${ev.cons?`<div class="pev-section"><h4>⚠️ 아쉬운 점</h4><ul class="pev-list cons">${ev.cons.map(c=>`<li>${c}</li>`).join('')}</ul></div>`:''}
+${ev.timeline?`<div class="pev-section"><h4>📋 수업 적용 타임라인${ev.spec?' ('+ev.spec.time+')':''}</h4><div class="pev-timeline">${ev.timeline.map(tl=>`<div class="tl-item"><div class="tl-t">${tl.t}</div><div class="tl-d">${tl.d}</div></div>`).join('')}</div></div>`:''}
+</div>
+${ev.recommend?`<div class="pev-recommend">💡 <b>추천:</b> ${ev.recommend}</div>`:''}
+</div>`).join('')}
+<div class="cmt-sec" style="margin-top:14px"><h3>💬 선생님들의 의견 (${p.cm.length})</h3>
+${p.cm.map((c,ci)=>{const key='p'+p.id+'c'+ci;return `<div class="cmt"><div style="width:30px;height:30px;border-radius:50%;background:${c.tp==='agree'?'var(--pbg)':'var(--abg)'};color:${c.tp==='agree'?'var(--p)':'var(--a)'};display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:600;flex-shrink:0">${T[c.w][0]}</div><div class="cb"><span class="cn">${T[c.w]} ${tlv(c.w)}</span><span class="ct">${c.tm}</span><div class="cx">${c.tx}</div><div class="cr"><span class="${S.cmtLiked.has(key)?'liked-c':''}" onclick="tgCL('${key}')">👍 ${c.lk+(S.cmtLiked.has(key)?1:0)}</span><span>💬 답글</span></div></div></div>`}).join('')}
+<div class="cmt-inp"><input placeholder="의견을 남겨주세요..." id="cmtInp"><button onclick="addCmt('prod',${p.id})">등록</button></div></div></div>`}
+
+function rCom(){let f=S.comCat==='all'?PO:PO.filter(p=>p.cat===S.comCat);
+return `<div class="pg on"><div class="pg-h"><h1>커뮤니티</h1><p>수업 고민, 시사 이슈, 자유로운 이야기</p></div>
+<div style="display:flex;gap:4px;margin-bottom:14px">${[['all','전체'],['qna','Q&A'],['discuss','시사'],['news','정책'],['free','자유']].map(([k,v])=>`<button class="bt bt-s ${S.comCat===k?'on':''}" onclick="S.comCat='${k}';render()">${v}</button>`).join('')}</div>
+<div class="g2"><div>${f.map(p=>`<div class="cp" onclick="go('post-detail',{detPo:${p.id}})"><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">${av(p.w,24)}<span style="font-size:12px;font-weight:600">${T[p.w]} ${tlv(p.w)}</span><span style="font-size:11px;color:var(--tl)">${p.dt}</span></div><span class="cp-cat ${CC[p.cat]}">${CN[p.cat]}</span><h4>${p.t}</h4><div class="dx">${p.bd}</div><div class="cp-ft"><span>💬${p.cm.length}</span><span>❤️${p.lk+(S.savedPo.has(p.id)?1:0)}</span><span>👁${p.vw}</span></div></div>`).join('')}</div>
+<div><div class="cd"><div style="font-size:13px;font-weight:600;margin-bottom:6px">🔥 인기 글</div>${PO.slice().sort((a,b)=>b.lk-a.lk).slice(0,4).map((p,i)=>`<div style="font-size:12px;margin-bottom:4px;cursor:pointer" onclick="go('post-detail',{detPo:${p.id}})">${i+1}. ${p.t.slice(0,24)}… <span style="color:var(--tl)">(❤️${p.lk})</span></div>`).join('')}</div></div></div></div>`}
+
+function rPoD(){const p=PO[S.detPo];if(!p)return'';
+return `<div class="pg on"><div class="det-back" onclick="go('community')">← 커뮤니티</div><div class="det-hd">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">${av(p.w,32)}<div><span style="font-size:14px;font-weight:600">${T[p.w]} ${tlv(p.w)}</span><div style="font-size:11.5px;color:var(--tl)">${p.dt} · 👁 ${p.vw}</div></div></div>
+<span class="cp-cat ${CC[p.cat]}" style="margin-bottom:8px">${CN[p.cat]}</span><h1>${p.t}</h1>
+<div class="desc">${p.bd}</div>
+<div class="det-acts"><button class="bt ${S.savedPo.has(p.id)?'bt-p':'bt-o'}" onclick="tgPoLike(${p.id})">❤️ ${p.lk+(S.savedPo.has(p.id)?1:0)}</button><button class="bt bt-o">🔖 저장</button></div></div>
+<div class="cmt-sec"><h3>💬 댓글 (${p.cm.length})</h3>
+${p.cm.map((c,ci)=>{const key='po'+p.id+'c'+ci;return `<div class="cmt">${av(c.w)}<div class="cb"><span class="cn">${T[c.w]} ${tlv(c.w)}</span><span class="ct">${c.tm}</span><div class="cx">${c.tx}</div><div class="cr"><span class="${S.cmtLiked.has(key)?'liked-c':''}" onclick="tgCL('${key}')">👍 ${c.lk+(S.cmtLiked.has(key)?1:0)}</span><span>💬 답글</span></div></div></div>`}).join('')}
+<div class="cmt-inp"><input placeholder="댓글을 남겨주세요..." id="cmtInp"><button onclick="addCmt('post',${p.id})">등록</button></div></div></div>`}
+
+function rMy(){const myR=R.filter(r=>r.w===4);const savedR=[...S.saved].map(id=>R[id]).filter(Boolean);const tabs=['공유한 자료','비공개 자료','저장한 자료','활동 내역'];
+return `<div class="pg on"><div class="my-hd"><div class="my-av-wrap" onclick="openAvM()"><div class="my-av" style="background:${AVC[S.avColor]}">김</div><div class="av-edit">📷</div></div>
+<div class="my-inf"><h2>김서연 선생님 ${tlv(4)}</h2><p class="sub">서울 ○○중 · 사회 · 비상교육 · 6년차</p><div class="my-sts"><div><b>${myR.length}</b><span>공유</span></div><div><b>${myR.reduce((s,r)=>s+r.lk,0)}</b><span>좋아요</span></div><div><b>${S.saved.size}</b><span>저장</span></div><div><b>${S.actLog.filter(a=>a.icon==='💬').length}</b><span>댓글</span></div></div></div>
+<button class="bt bt-p" onclick="openShare()">📤 공유</button></div>
+<div class="my-tabs">${tabs.map((t,i)=>`<div class="my-tab ${S.myTab===i?'on':''}" onclick="S.myTab=${i};render()">${t}</div>`).join('')}</div>
+${S.myTab===0?`<div class="my-grid">${myR.map(r=>`<div class="my-cd" onclick="go('res-detail',{detR:${r.id}})"><span class="vis vis-pub">🌐</span><div class="tp">${TI[r.ty]||'📄'}</div><h4>${r.t}</h4><div class="mt">${r.tp>=0?TOP[r.tp]:(r.sp||'')} · 📥${r.dl} · ❤️${r.lk}</div></div>`).join('')}</div>`:''}
+${S.myTab===1?`<div style="font-size:12px;color:var(--ts);margin-bottom:10px">비공개 자료 — '전체 공유'로 공개 가능</div><div class="my-grid">
+<div class="my-cd"><span class="vis vis-pri">🔒</span><div class="tp">📝</div><h4>2학기 수행평가 계획</h4><div class="mt">개인 메모 · 2026.03.25</div><button class="bt bt-p bt-s" style="margin-top:6px" onclick="event.stopPropagation();openShare()">전체 공유</button></div>
+<div class="my-cd"><span class="vis vis-pri">🔒</span><div class="tp">📋</div><h4>서술형 문항 아이디어</h4><div class="mt">개인 메모 · 2026.03.20</div><button class="bt bt-p bt-s" style="margin-top:6px" onclick="event.stopPropagation();openShare()">전체 공유</button></div>
+<div class="my-cd"><span class="vis vis-pri">🔒</span><div class="tp">💡</div><h4>학기 초 아이디어 모음</h4><div class="mt">개인 메모 · 2026.02.28</div><button class="bt bt-p bt-s" style="margin-top:6px" onclick="event.stopPropagation();openShare()">전체 공유</button></div></div>`:''}
+${S.myTab===2?`<div class="my-grid">${savedR.length===0?'<div class="empty" style="grid-column:1/-1">피드나 아카이브에서 🔖 저장해보세요.</div>':''}${savedR.map(r=>`<div class="my-cd" onclick="go('res-detail',{detR:${r.id}})"><div class="tp">${TI[r.ty]||'📄'}</div><h4>${r.t}</h4><div class="mt">${T[r.w]} · ❤️${r.lk}</div></div>`).join('')}</div>`:''}
+${S.myTab===3?`<div>${S.actLog.length===0?'<div class="empty">좋아요, 저장, 댓글을 남기면 기록됩니다.</div>':''}${S.actLog.map(a=>`<div class="act-item"><div class="ai-ic" style="background:var(--bgw)">${a.icon}</div><div style="flex:1">${a.text}<div class="ai-t">${a.time}</div></div></div>`).join('')}</div>`:''}
+</div>`}
+</script>
+</body>
+</html>
